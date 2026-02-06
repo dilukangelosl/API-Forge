@@ -245,6 +245,36 @@ export class APIForge implements PluginPlatformAPI {
                 }
             }
 
+            // Check scope requirements
+            const requiredScopes = route.metadata?.scopes as string[] | undefined;
+            if (requiredScopes && requiredScopes.length > 0) {
+                const tokenScopes = ctx.request.oauth?.scopes ?? [];
+
+                // Check if token is present
+                if (!ctx.request.oauth) {
+                    return Response.json(401, {
+                        error: "unauthorized",
+                        error_description: "Authentication required",
+                    }, {
+                        "WWW-Authenticate": 'Bearer realm="API"',
+                    });
+                }
+
+                // Check if token has all required scopes
+                const missingScopes = requiredScopes.filter(
+                    (scope) => !tokenScopes.includes(scope)
+                );
+
+                if (missingScopes.length > 0) {
+                    return Response.json(403, {
+                        error: "insufficient_scope",
+                        error_description: `Missing required scopes: ${missingScopes.join(", ")}`,
+                        required_scopes: requiredScopes,
+                        granted_scopes: tokenScopes,
+                    });
+                }
+            }
+
             // Execute handler
             let response: APIForgeResponse;
             try {

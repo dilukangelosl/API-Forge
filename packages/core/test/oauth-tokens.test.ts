@@ -119,7 +119,7 @@ describe("TokenService", () => {
             expect(jwks.keys).toBeInstanceOf(Array);
             expect(jwks.keys.length).toBeGreaterThan(0);
 
-            const key = jwks.keys[0];
+            const key = jwks.keys[0]!;
             expect(key.kty).toBe("RSA");
             expect(key.use).toBe("sig");
             expect(key.alg).toBe("RS256");

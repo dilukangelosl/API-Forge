@@ -9,6 +9,7 @@ import { DocsPage } from "./pages/Docs";
 import { AppsPage } from "./pages/Apps";
 import { ConsolePage } from "./pages/Console";
 import { SettingsPage } from "./pages/Settings";
+import { ConsentPage } from "./pages/Consent";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <QueryClientProvider client={queryClient}>
             <BrowserRouter basename="/portal">
                 <Routes>
+                    {/* Consent page - full screen, no layout */}
+                    <Route path="consent" element={<ConsentPage />} />
+                    
+                    {/* Main portal with layout */}
                     <Route path="/" element={<Layout />}>
                         <Route index element={<DocsPage />} />
                         <Route path="docs" element={<DocsPage />} />

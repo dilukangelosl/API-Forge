@@ -14,6 +14,7 @@
     "dependencies": {
         "@api-forge/core": "workspace:*",
         "@api-forge/adapter-express": "workspace:*",
+        "@api-forge/plugin-openapi": "workspace:*",
         "express": "^4.18.0"
     },
     "devDependencies": {

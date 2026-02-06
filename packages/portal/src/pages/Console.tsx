@@ -1,7 +1,13 @@
-import { useState } from "react";
-import { Play, Loader2, ChevronDown, Copy, Check } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Play, Loader2, ChevronDown, Copy, Check, AlertCircle } from "lucide-react";
 
-const endpoints = [
+interface Endpoint {
+    method: string;
+    path: string;
+    label: string;
+}
+
+const defaultEndpoints: Endpoint[] = [
     { method: "GET", path: "/api/v1/users", label: "List Users" },
     { method: "GET", path: "/api/v1/users/:id", label: "Get User" },
     { method: "POST", path: "/api/v1/users", label: "Create User" },
@@ -16,13 +22,34 @@ const methodColors: Record<string, string> = {
 };
 
 export function ConsolePage() {
-    const [selectedEndpoint, setSelectedEndpoint] = useState(endpoints[0]);
+    const [endpoints, setEndpoints] = useState<Endpoint[]>(defaultEndpoints);
+    const [selectedEndpoint, setSelectedEndpoint] = useState(defaultEndpoints[0]);
     const [token, setToken] = useState("");
     const [pathParams, setPathParams] = useState<Record<string, string>>({});
     const [requestBody, setRequestBody] = useState("");
     const [response, setResponse] = useState<string | null>(null);
+    const [responseStatus, setResponseStatus] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
     const [copied, setCopied] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        // Fetch endpoints from API
+        fetch("/portal/api/endpoints")
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.endpoints?.length) {
+                    const eps = data.endpoints.map((e: { method: string; path: string; description: string }) => ({
+                        method: e.method,
+                        path: e.path,
+                        label: e.description,
+                    }));
+                    setEndpoints(eps);
+                    setSelectedEndpoint(eps[0]);
+                }
+            })
+            .catch(console.error);
+    }, []);
 
     const extractPathParams = (path: string): string[] => {
         const matches = path.match(/:([a-zA-Z_]+)/g);
@@ -40,28 +67,69 @@ export function ConsolePage() {
     };
 
     const executeRequest = async () => {
+        // Require token for authenticated endpoints
+        if (!token.trim()) {
+            setError("Access token is required. Get a token by calling POST /oauth/token with your client credentials.");
+            return;
+        }
+
         setLoading(true);
         setResponse(null);
+        setResponseStatus(null);
+        setError(null);
 
-        // Simulate API call
-        await new Promise((r) => setTimeout(r, 1000));
+        try {
+            const url = `http://localhost:3000${buildPath()}`;
+            const headers: Record<string, string> = {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json",
+            };
 
-        const mockResponse = {
-            status: 200,
-            data: {
-                users: [
-                    { id: "1", name: "Alice", email: "alice@example.com" },
-                    { id: "2", name: "Bob", email: "bob@example.com" },
-                ],
-            },
-            headers: {
-                "x-ratelimit-limit": "1000",
-                "x-ratelimit-remaining": "999",
-            },
-        };
+            const options: RequestInit = {
+                method: selectedEndpoint.method,
+                headers,
+            };
 
-        setResponse(JSON.stringify(mockResponse, null, 2));
-        setLoading(false);
+            if (["POST", "PUT", "PATCH"].includes(selectedEndpoint.method) && requestBody.trim()) {
+                try {
+                    JSON.parse(requestBody); // Validate JSON
+                    options.body = requestBody;
+                } catch {
+                    setError("Invalid JSON in request body");
+                    setLoading(false);
+                    return;
+                }
+            }
+
+            const res = await fetch(url, options);
+            setResponseStatus(res.status);
+
+            const contentType = res.headers.get("content-type");
+            let body: unknown;
+            
+            if (contentType?.includes("application/json")) {
+                body = await res.json();
+            } else {
+                body = await res.text();
+            }
+
+            // Build response object with headers
+            const responseObj = {
+                status: res.status,
+                statusText: res.statusText,
+                headers: {
+                    "x-ratelimit-limit": res.headers.get("x-ratelimit-limit") ?? undefined,
+                    "x-ratelimit-remaining": res.headers.get("x-ratelimit-remaining") ?? undefined,
+                },
+                body,
+            };
+
+            setResponse(JSON.stringify(responseObj, null, 2));
+        } catch (err) {
+            setError(`Request failed: ${err instanceof Error ? err.message : "Unknown error"}`);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const copyResponse = () => {
@@ -70,6 +138,13 @@ export function ConsolePage() {
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
         }
+    };
+
+    const getStatusColor = () => {
+        if (!responseStatus) return "";
+        if (responseStatus >= 200 && responseStatus < 300) return "text-emerald-400";
+        if (responseStatus >= 400 && responseStatus < 500) return "text-amber-400";
+        return "text-red-400";
     };
 
     return (
@@ -85,6 +160,14 @@ export function ConsolePage() {
                 {/* Request Panel */}
                 <div className="glass rounded-xl p-6">
                     <h2 className="text-lg font-semibold mb-4">Request</h2>
+
+                    {/* Error Alert */}
+                    {error && (
+                        <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg flex items-start gap-2">
+                            <AlertCircle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm text-red-400">{error}</span>
+                        </div>
+                    )}
 
                     {/* Endpoint Selector */}
                     <div className="mb-4">
@@ -135,15 +218,23 @@ export function ConsolePage() {
                     {/* Access Token */}
                     <div className="mb-4">
                         <label className="block text-sm text-slate-400 mb-2">
-                            Access Token (Bearer)
+                            Access Token (Bearer) <span className="text-red-400">*</span>
                         </label>
                         <input
                             type="text"
                             value={token}
-                            onChange={(e) => setToken(e.target.value)}
+                            onChange={(e) => {
+                                setToken(e.target.value);
+                                setError(null);
+                            }}
                             placeholder="Paste your access token here..."
-                            className="w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className={`w-full px-4 py-3 rounded-lg bg-slate-900 border text-slate-100 placeholder-slate-500 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                error && !token ? "border-red-500" : "border-slate-700"
+                            }`}
                         />
+                        <p className="text-xs text-slate-500 mt-1">
+                            Get a token: <code className="text-slate-400">curl -X POST http://localhost:3000/oauth/token -d "grant_type=client_credentials&client_id=...&client_secret=..."</code>
+                        </p>
                     </div>
 
                     {/* Path Parameters */}
@@ -185,7 +276,7 @@ export function ConsolePage() {
                             <textarea
                                 value={requestBody}
                                 onChange={(e) => setRequestBody(e.target.value)}
-                                placeholder='{"name": "John", "email": "john@example.com"}'
+                                placeholder={'{"name": "John", "email": "john@example.com"}'}
                                 rows={4}
                                 className="w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                             />
@@ -215,7 +306,14 @@ export function ConsolePage() {
                 {/* Response Panel */}
                 <div className="glass rounded-xl p-6">
                     <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-semibold">Response</h2>
+                        <div className="flex items-center gap-2">
+                            <h2 className="text-lg font-semibold">Response</h2>
+                            {responseStatus && (
+                                <span className={`text-sm font-mono ${getStatusColor()}`}>
+                                    {responseStatus}
+                                </span>
+                            )}
+                        </div>
                         {response && (
                             <button
                                 onClick={copyResponse}

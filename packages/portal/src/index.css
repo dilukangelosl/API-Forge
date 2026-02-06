@@ -1,26 +1,174 @@
 @import "tailwindcss";
 
-/* Custom design tokens */
+/* Professional Light Mode Design System */
 :root {
-    --color-primary: #2563eb;
-    --color-primary-dark: #1d4ed8;
-    --color-surface: #0f172a;
-    --color-surface-2: #1e293b;
-    --color-border: #334155;
-    --color-text: #f1f5f9;
-    --color-text-muted: #94a3b8;
+    --color-primary: #3b82f6;
+    --color-primary-dark: #2563eb;
+    --color-primary-light: #60a5fa;
+    --color-bg: #ffffff;
+    --color-surface: #f8fafc;
+    --color-surface-2: #f1f5f9;
+    --color-border: #e2e8f0;
+    --color-border-dark: #cbd5e1;
+    --color-text: #0f172a;
+    --color-text-secondary: #475569;
+    --color-text-muted: #64748b;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
 }
 
-/* Base styles */
+/* Base styles - Clean White Theme */
 body {
-    @apply bg-slate-950 text-slate-100 font-sans antialiased;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom utilities */
-.glass {
-    @apply bg-slate-900/80 backdrop-blur-xl border border-slate-800;
+/* Cards and surfaces */
+.card {
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
 }
 
-.glow {
-    box-shadow: 0 0 40px -10px rgba(59, 130, 246, 0.5);
+.card:hover {
+    box-shadow: 0 4px 12px 0 rgb(0 0 0 / 0.08);
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: var(--color-bg);
+    border-right: 1px solid var(--color-border);
+}
+
+/* Input fields */
+.input {
+    @apply w-full px-4 py-2.5 rounded-lg border transition-all duration-200;
+    background-color: var(--color-bg);
+    border-color: var(--color-border);
+    color: var(--color-text);
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input::placeholder {
+    color: var(--color-text-muted);
+}
+
+/* Buttons */
+.btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.btn-secondary {
+    background-color: var(--color-surface-2);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-border);
+}
+
+.btn-danger {
+    background-color: var(--color-danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
+}
+
+/* Badge styles */
+.badge {
+    @apply px-2 py-0.5 text-xs font-medium rounded-full;
+}
+
+.badge-success {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.badge-warning {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.badge-info {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+/* Credential display */
+.credential-box {
+    @apply font-mono text-sm px-3 py-2 rounded-lg;
+    background-color: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+}
+
+/* Navigation link */
+.nav-link {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors;
+    color: var(--color-text-secondary);
+}
+
+.nav-link:hover {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+}
+
+.nav-link.active {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+/* Danger zone */
+.danger-zone {
+    @apply p-4 rounded-lg border-2 border-dashed;
+    border-color: #fecaca;
+    background-color: #fef2f2;
+}
+
+/* Divider */
+.divider {
+    @apply my-6;
+    height: 1px;
+    background-color: var(--color-border);
+}
+
+/* Modal overlay */
+.modal-overlay {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+}
+
+/* Section headers */
+.section-title {
+    @apply text-sm font-semibold uppercase tracking-wide mb-3;
+    color: var(--color-text-muted);
+}
+
+/* Scope tag */
+.scope-tag {
+    @apply px-2 py-1 text-xs font-medium rounded-md;
+    background-color: var(--color-surface-2);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
 }

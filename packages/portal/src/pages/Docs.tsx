@@ -1,44 +1,46 @@
-import { useState } from "react";
-import { Search, ChevronRight, Copy, Check, Code2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search, ChevronRight, Copy, Check, Code2, Loader2 } from "lucide-react";
 
-const endpoints = [
-    {
-        method: "GET",
-        path: "/api/v1/users",
-        description: "List all users",
-        scopes: ["read:users"],
-    },
-    {
-        method: "GET",
-        path: "/api/v1/users/:id",
-        description: "Get user by ID",
-        scopes: ["read:users"],
-    },
-    {
-        method: "POST",
-        path: "/api/v1/users",
-        description: "Create a new user",
-        scopes: ["write:users"],
-    },
-    {
-        method: "GET",
-        path: "/api/v1/products",
-        description: "List all products",
-        scopes: ["read:products"],
-    },
-];
+interface Endpoint {
+    method: string;
+    path: string;
+    description: string;
+    scopes?: string[];
+}
 
 const methodColors: Record<string, string> = {
-    GET: "bg-emerald-500/20 text-emerald-400",
-    POST: "bg-blue-500/20 text-blue-400",
-    PUT: "bg-amber-500/20 text-amber-400",
-    DELETE: "bg-red-500/20 text-red-400",
-    PATCH: "bg-purple-500/20 text-purple-400",
+    GET: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+    POST: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+    PUT: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+    PATCH: "bg-orange-500/20 text-orange-400 border-orange-500/30",
+    DELETE: "bg-red-500/20 text-red-400 border-red-500/30",
 };
 
 export function DocsPage() {
+    const [endpoints, setEndpoints] = useState<Endpoint[]>([]);
+    const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
-    const [copied, setCopied] = useState<string | null>(null);
+    const [selectedEndpoint, setSelectedEndpoint] = useState<Endpoint | null>(null);
+    const [copied, setCopied] = useState(false);
+
+    useEffect(() => {
+        fetchEndpoints();
+    }, []);
+
+    const fetchEndpoints = async () => {
+        try {
+            const res = await fetch("/portal/api/endpoints");
+            const data = await res.json();
+            setEndpoints(data.endpoints || []);
+            if (data.endpoints?.length > 0) {
+                setSelectedEndpoint(data.endpoints[0]);
+            }
+        } catch (err) {
+            console.error("Failed to fetch endpoints:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const filteredEndpoints = endpoints.filter(
         (e) =>
@@ -46,116 +48,142 @@ export function DocsPage() {
             e.description.toLowerCase().includes(search.toLowerCase())
     );
 
-    const copyToClipboard = (text: string) => {
-        navigator.clipboard.writeText(text);
-        setCopied(text);
-        setTimeout(() => setCopied(null), 2000);
+    const copyCode = () => {
+        if (!selectedEndpoint) return;
+        const code = `curl -X ${selectedEndpoint.method} "http://localhost:3000${selectedEndpoint.path}" \\
+  -H "Authorization: Bearer YOUR_TOKEN" \\
+  -H "Content-Type: application/json"`;
+        navigator.clipboard.writeText(code);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
     };
 
-    return (
-        <div className="max-w-7xl mx-auto px-6 py-12">
-            {/* Hero */}
-            <div className="text-center mb-12">
-                <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
-                    API Documentation
-                </h1>
-                <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-                    Explore our REST API endpoints. All endpoints require OAuth 2.0 authentication
-                    with appropriate scopes.
-                </p>
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-[400px]">
+                <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
             </div>
+        );
+    }
 
-            {/* Search */}
-            <div className="max-w-xl mx-auto mb-12">
-                <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                    <input
-                        type="text"
-                        placeholder="Search endpoints..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
+    return (
+        <div className="flex h-[calc(100vh-4rem)]">
+            {/* Sidebar */}
+            <div className="w-80 border-r border-slate-700 flex flex-col">
+                <div className="p-4 border-b border-slate-700">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <input
+                            type="text"
+                            placeholder="Search endpoints..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                        />
+                    </div>
+                </div>
+
+                <div className="flex-1 overflow-y-auto">
+                    {filteredEndpoints.map((endpoint, i) => (
+                        <button
+                            key={i}
+                            onClick={() => setSelectedEndpoint(endpoint)}
+                            className={`w-full flex items-center gap-3 px-4 py-3 border-b border-slate-800 hover:bg-slate-800/50 transition-colors ${
+                                selectedEndpoint?.path === endpoint.path ? "bg-slate-800/70" : ""
+                            }`}
+                        >
+                            <span
+                                className={`px-2 py-0.5 text-xs font-mono font-medium rounded border ${
+                                    methodColors[endpoint.method]
+                                }`}
+                            >
+                                {endpoint.method}
+                            </span>
+                            <span className="flex-1 text-left text-sm font-mono text-slate-300 truncate">
+                                {endpoint.path}
+                            </span>
+                            <ChevronRight className="w-4 h-4 text-slate-500" />
+                        </button>
+                    ))}
                 </div>
             </div>
 
-            {/* Endpoints */}
-            <div className="space-y-4">
-                {filteredEndpoints.map((endpoint, i) => (
-                    <div
-                        key={i}
-                        className="glass rounded-xl p-6 hover:border-slate-700 transition-all group"
-                    >
-                        <div className="flex items-start justify-between gap-4">
-                            <div className="flex items-start gap-4">
+            {/* Main Content */}
+            <div className="flex-1 overflow-y-auto p-8">
+                {selectedEndpoint && (
+                    <>
+                        <div className="mb-8">
+                            <div className="flex items-center gap-3 mb-2">
                                 <span
-                                    className={`px-3 py-1 rounded-lg text-xs font-bold ${
-                                        methodColors[endpoint.method]
+                                    className={`px-3 py-1 text-sm font-mono font-medium rounded border ${
+                                        methodColors[selectedEndpoint.method]
                                     }`}
                                 >
-                                    {endpoint.method}
+                                    {selectedEndpoint.method}
                                 </span>
-                                <div>
-                                    <code className="text-slate-100 font-mono text-sm">
-                                        {endpoint.path}
-                                    </code>
-                                    <p className="text-slate-400 mt-1 text-sm">
-                                        {endpoint.description}
-                                    </p>
-                                    <div className="flex items-center gap-2 mt-2">
-                                        {endpoint.scopes.map((scope) => (
-                                            <span
-                                                key={scope}
-                                                className="px-2 py-0.5 rounded bg-slate-800 text-xs text-slate-400"
-                                            >
-                                                {scope}
-                                            </span>
-                                        ))}
-                                    </div>
+                                <code className="text-xl font-mono">
+                                    {selectedEndpoint.path}
+                                </code>
+                            </div>
+                            <p className="text-slate-400">{selectedEndpoint.description}</p>
+                        </div>
+
+                        {selectedEndpoint.scopes && selectedEndpoint.scopes.length > 0 && (
+                            <div className="mb-8">
+                                <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">
+                                    Required Scopes
+                                </h3>
+                                <div className="flex gap-2 flex-wrap">
+                                    {selectedEndpoint.scopes.map((scope) => (
+                                        <span
+                                            key={scope}
+                                            className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm"
+                                        >
+                                            {scope}
+                                        </span>
+                                    ))}
                                 </div>
                             </div>
+                        )}
 
-                            <div className="flex items-center gap-2">
+                        <div className="mb-8">
+                            <div className="flex items-center justify-between mb-3">
+                                <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide">
+                                    Example Request
+                                </h3>
                                 <button
-                                    onClick={() => copyToClipboard(endpoint.path)}
-                                    className="p-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
-                                    title="Copy path"
+                                    onClick={copyCode}
+                                    className="flex items-center gap-1.5 px-2 py-1 text-xs text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded transition-colors"
                                 >
-                                    {copied === endpoint.path ? (
-                                        <Check className="w-4 h-4 text-emerald-400" />
+                                    {copied ? (
+                                        <>
+                                            <Check className="w-3 h-3 text-emerald-400" />
+                                            Copied!
+                                        </>
                                     ) : (
-                                        <Copy className="w-4 h-4" />
+                                        <>
+                                            <Copy className="w-3 h-3" />
+                                            Copy
+                                        </>
                                     )}
                                 </button>
-                                <button className="p-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors opacity-0 group-hover:opacity-100">
-                                    <ChevronRight className="w-4 h-4" />
-                                </button>
+                            </div>
+                            <div className="relative">
+                                <div className="absolute top-3 left-3 flex items-center gap-2">
+                                    <Code2 className="w-4 h-4 text-slate-500" />
+                                    <span className="text-xs text-slate-500 font-mono">curl</span>
+                                </div>
+                                <pre className="bg-slate-950 border border-slate-800 rounded-xl p-6 pt-10 overflow-x-auto">
+                                    <code className="text-sm text-slate-300 font-mono">
+                                        {`curl -X ${selectedEndpoint.method} "http://localhost:3000${selectedEndpoint.path}" \\
+  -H "Authorization: Bearer YOUR_TOKEN" \\
+  -H "Content-Type: application/json"`}
+                                    </code>
+                                </pre>
                             </div>
                         </div>
-                    </div>
-                ))}
-            </div>
-
-            {/* Code Example */}
-            <div className="mt-12 glass rounded-xl p-6">
-                <div className="flex items-center gap-2 mb-4">
-                    <Code2 className="w-5 h-5 text-blue-400" />
-                    <h3 className="text-lg font-semibold">Quick Start</h3>
-                </div>
-                <pre className="bg-slate-950 rounded-lg p-4 overflow-x-auto text-sm">
-                    <code className="text-slate-300">
-{`# Get an access token
-curl -X POST http://localhost:3000/oauth/token \\
-  -d "grant_type=client_credentials" \\
-  -d "client_id=YOUR_CLIENT_ID" \\
-  -d "client_secret=YOUR_SECRET" \\
-  -d "scope=read:users"
-
-# Call an API endpoint
-curl http://localhost:3000/api/v1/users \\
-  -H "Authorization: Bearer YOUR_TOKEN"`}
-                    </code>
-                </pre>
+                    </>
+                )}
             </div>
         </div>
     );

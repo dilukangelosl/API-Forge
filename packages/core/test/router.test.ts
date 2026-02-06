@@ -1,6 +1,7 @@
 import { describe, test, expect, beforeEach } from "bun:test";
 import { Router } from "../src/core/router";
 import type { RouteDefinition } from "../src/abstractions/plugin";
+import type { HttpMethod } from "../src/abstractions/request";
 
 describe("Router", () => {
     let router: Router;
@@ -16,7 +17,7 @@ describe("Router", () => {
         ...overrides,
     });
 
-    const createRequest = (method: string, path: string) => ({
+    const createRequest = (method: HttpMethod, path: string) => ({
         method,
         path,
         headers: {},

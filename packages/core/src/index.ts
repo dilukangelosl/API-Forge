@@ -18,6 +18,7 @@ export * from "./utils/errors";
 
 // Plugins
 export { oauthPlugin } from "./plugins/oauth";
+export type { UserAuthAdapter, AuthenticatedUser } from "./plugins/oauth";
 export { rateLimitPlugin } from "./plugins/rate-limit";
 
 // Re-export commonly used types for convenience
@@ -29,4 +30,5 @@ export type {
     FrameworkAdapter,
     APIForgePlugin,
     HttpMethod,
+    RouteMetadata,
 } from "./abstractions";

@@ -8,7 +8,43 @@ import { TokenService } from "./tokens";
 import { handleClientCredentialsGrant } from "./grants/client-credentials";
 import { handleAuthorizationCodeGrant } from "./grants/authorization-code";
 import { handleRefreshTokenGrant } from "./grants/refresh-token";
+import { handleAuthorizationRequest } from "./grants/authorize";
 import { OAuthErrors } from "../../utils/errors";
+
+/**
+ * User authentication adapter for integrating with host app's auth system
+ */
+export interface UserAuthAdapter {
+    /**
+     * Get the current authenticated user from the request
+     * Return null if user is not authenticated
+     */
+    getCurrentUser: (request: unknown) => Promise<AuthenticatedUser | null> | AuthenticatedUser | null;
+
+    /**
+     * URL to redirect unauthenticated users for login
+     */
+    loginUrl: string;
+
+    /**
+     * Optional: Check if user has permission to create apps
+     */
+    canCreateApps?: (user: AuthenticatedUser) => boolean;
+}
+
+/**
+ * Authenticated user from host app
+ */
+export interface AuthenticatedUser {
+    /** Unique user identifier */
+    id: string;
+    /** Display name */
+    name?: string;
+    /** Email address */
+    email?: string;
+    /** Additional metadata */
+    metadata?: Record<string, unknown>;
+}
 
 /**
  * OAuth 2.0 server plugin configuration
@@ -22,6 +58,22 @@ export interface OAuthPluginConfig {
 
     /** Audience for tokens */
     audience: string;
+
+    /**
+     * User authentication adapter for portal protection
+     * When provided, portal endpoints will require authentication
+     */
+    userAuth?: UserAuthAdapter;
+
+    /**
+     * Maximum OAuth apps per user (default: unlimited)
+     */
+    maxAppsPerUser?: number;
+
+    /**
+     * Maximum redirect URIs per app (default: 10)
+     */
+    maxRedirectUrisPerApp?: number;
 }
 
 /**
@@ -55,6 +107,27 @@ export function oauthPlugin(pluginConfig: OAuthPluginConfig): APIForgePlugin {
         },
 
         routes: [
+            // Authorization endpoint (start of authorization code flow)
+            {
+                method: "GET",
+                path: `${basePath}/authorize`,
+                handler: async (ctx: APIForgeContext): Promise<APIForgeResponse> => {
+                    const issuer = pluginConfig.issuer;
+                    const consentPageUrl = `${issuer}/portal/consent`;
+
+                    return handleAuthorizationRequest({
+                        ctx,
+                        storage,
+                        config,
+                        consentPageUrl,
+                    });
+                },
+                metadata: {
+                    description: "OAuth 2.0 authorization endpoint",
+                    tags: ["oauth"],
+                },
+            },
+
             // Token endpoint
             {
                 method: "POST",

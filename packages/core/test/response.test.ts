@@ -96,7 +96,7 @@ describe("Response Helper", () => {
             const res = Response.serverError();
 
             expect(res.status).toBe(500);
-            expect(res.body.message).toBe("Internal Server Error");
+            expect((res.body as { message: string }).message).toBe("Internal Server Error");
         });
 
         test("tooManyRequests should return 429 with Retry-After", () => {
@@ -104,7 +104,7 @@ describe("Response Helper", () => {
 
             expect(res.status).toBe(429);
             expect(res.headers["Retry-After"]).toBe("60");
-            expect(res.body.error).toBe("too_many_requests");
+            expect((res.body as { error: string }).error).toBe("too_many_requests");
         });
     });
 
