@@ -1,0 +1,53 @@
+{
+    "name": "api-forge",
+    "version": "0.1.0",
+    "description": "OAuth + API Gateway + Developer Portal for Any JS/TS Framework",
+    "author": "Diluk Angelo <dilukangelo@gmail.com>",
+    "license": "MIT",
+    "type": "module",
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "build": "bun run --filter '*' build",
+        "dev": "bun run --filter '*' dev",
+        "test": "bun test",
+        "test:adapters": "bun test --filter '*adapter*'",
+        "test:security": "bun test ./test/security",
+        "typecheck": "tsc --noEmit",
+        "lint": "eslint . --ext .ts,.tsx",
+        "lint:fix": "eslint . --ext .ts,.tsx --fix",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "clean": "rm -rf packages/*/dist"
+    },
+    "devDependencies": {
+        "@types/bun": "latest",
+        "typescript": "^5.4.0",
+        "eslint": "^9.0.0",
+        "@typescript-eslint/eslint-plugin": "^8.0.0",
+        "@typescript-eslint/parser": "^8.0.0",
+        "prettier": "^3.2.0"
+    },
+    "engines": {
+        "node": ">=18.0.0",
+        "bun": ">=1.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dilukangelosl/API-Forge"
+    },
+    "keywords": [
+        "oauth",
+        "oauth2",
+        "api-gateway",
+        "developer-portal",
+        "middleware",
+        "express",
+        "hono",
+        "fastify",
+        "bun",
+        "typescript"
+    ]
+}

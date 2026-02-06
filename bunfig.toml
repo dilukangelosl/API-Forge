@@ -1,0 +1,11 @@
+[build]
+entrypoints = ["./packages/core/src/index.ts"]
+outdir = "./packages/core/dist"
+target = "bun"
+format = "esm"
+splitting = true
+sourcemap = "linked"
+minify = false
+
+[test]
+preload = ["./test/setup.ts"]

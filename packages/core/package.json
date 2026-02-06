@@ -1,0 +1,49 @@
+{
+    "name": "@api-forge/core",
+    "version": "0.1.0",
+    "description": "Core API Forge library - OAuth, rate limiting, docs, and portal",
+    "author": "Diluk Angelo <dilukangelo@gmail.com>",
+    "license": "MIT",
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./storage/memory": {
+            "import": "./dist/storage/memory.js",
+            "types": "./dist/storage/memory.d.ts"
+        },
+        "./storage/redis": {
+            "import": "./dist/storage/redis.js",
+            "types": "./dist/storage/redis.d.ts"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "bun build ./src/index.ts --outdir ./dist --target bun",
+        "dev": "bun --watch ./src/index.ts",
+        "test": "bun test"
+    },
+    "dependencies": {
+        "zod": "^3.22.0",
+        "jose": "^5.2.0"
+    },
+    "peerDependencies": {
+        "ioredis": "^5.0.0"
+    },
+    "peerDependenciesMeta": {
+        "ioredis": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "@types/bun": "latest",
+        "typescript": "^5.4.0"
+    }
+}

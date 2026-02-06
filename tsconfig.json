@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022"],
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "paths": {
+      "@api-forge/core": ["./packages/core/src/index.ts"],
+      "@api-forge/core/*": ["./packages/core/src/*"],
+      "@api-forge/adapter-express": ["./packages/adapter-express/src/index.ts"],
+      "@api-forge/adapter-hono": ["./packages/adapter-hono/src/index.ts"],
+      "@api-forge/adapter-fastify": ["./packages/adapter-fastify/src/index.ts"]
+    },
+    "baseUrl": "."
+  },
+  "include": ["packages/*/src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "packages/portal"]
+}
