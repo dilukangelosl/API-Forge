@@ -57,7 +57,7 @@ export class Router {
             if (match) {
                 const params: Record<string, string> = {};
                 compiled.paramNames.forEach((name, index) => {
-                    params[name] = match[index + 1];
+                    params[name] = match[index + 1]!;
                 });
                 return { route: compiled.definition, params };
             }

@@ -297,8 +297,8 @@ export function parseDuration(duration: Duration): number {
         throw new Error(`Invalid duration format: ${duration}`);
     }
 
-    const value = parseInt(match[1], 10);
-    const unit = match[2];
+    const value = parseInt(match[1]!, 10);
+    const unit = match[2]!;
 
     switch (unit) {
         case "ms": return value;
@@ -319,8 +319,8 @@ export function parseRateLimit(rateLimit: RateLimitString): { requests: number; 
         throw new Error(`Invalid rate limit format: ${rateLimit}`);
     }
 
-    const requests = parseInt(match[1], 10);
-    const unit = match[2];
+    const requests = parseInt(match[1]!, 10);
+    const unit = match[2]!;
 
     let windowMs: number;
     switch (unit) {

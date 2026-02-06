@@ -118,8 +118,8 @@ export async function handleRefreshTokenGrant(params: {
     // Generate new tokens
     const tokenPair = await tokenService.generateTokenPair({
         clientId: tokenRecord.clientId,
-        userId: tokenRecord.userId,
         scopes,
+        ...(tokenRecord.userId !== undefined && { userId: tokenRecord.userId }),
     });
 
     // Revoke old refresh token if rotating

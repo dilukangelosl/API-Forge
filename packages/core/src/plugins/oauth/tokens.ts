@@ -1,8 +1,8 @@
-import { SignJWT, jwtVerify, generateKeyPair, exportJWK, importJWK } from "jose";
+import { SignJWT, jwtVerify, generateKeyPair, exportJWK } from "jose";
 import type { JWK, KeyLike } from "jose";
 import type { TokenRecord } from "../../abstractions/storage";
 import { generateAccessToken, generateRefreshToken } from "../../utils/crypto";
-import type { TokenConfig, Duration } from "../../core/config";
+import type { Duration } from "../../core/config";
 import { parseDuration } from "../../core/config";
 
 /**
@@ -148,7 +148,7 @@ export class TokenService {
             token: accessToken,
             type: "access",
             clientId: params.clientId,
-            userId: params.userId,
+            ...(params.userId !== undefined && { userId: params.userId }),
             scopes: params.scopes,
             expiresAt: new Date(Date.now() + accessTokenTTLMs),
             createdAt: new Date(),
@@ -159,7 +159,7 @@ export class TokenService {
             token: refreshToken,
             type: "refresh",
             clientId: params.clientId,
-            userId: params.userId,
+            ...(params.userId !== undefined && { userId: params.userId }),
             scopes: params.scopes,
             expiresAt: new Date(Date.now() + refreshTokenTTLMs),
             createdAt: new Date(),
@@ -205,7 +205,7 @@ export class TokenService {
                 jti: payload.jti!,
                 scope: payload.scope as string,
                 client_id: payload.client_id as string,
-                user_id: payload.user_id as string | undefined,
+                ...(payload.user_id !== undefined && { user_id: payload.user_id as string }),
             };
         } catch {
             return null;

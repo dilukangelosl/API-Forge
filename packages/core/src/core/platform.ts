@@ -73,9 +73,9 @@ export class APIDefinition {
                 return options.handler(ctx as APIForgeContext<TInput>);
             },
             metadata: {
-                description: options.description,
-                scopes: options.scopes ?? this.options.defaultScopes,
-                rateLimit: options.rateLimit ?? this.options.defaultRateLimit,
+                ...(options.description && { description: options.description }),
+                ...(options.scopes || this.options.defaultScopes ? { scopes: options.scopes ?? this.options.defaultScopes } : {}),
+                ...(options.rateLimit || this.options.defaultRateLimit ? { rateLimit: options.rateLimit ?? this.options.defaultRateLimit } : {}),
                 tags: [...(this.options.tags ?? []), ...(options.tags ?? [])],
                 requiresAuth: (options.scopes?.length ?? 0) > 0,
             },
@@ -264,6 +264,10 @@ export class APIForge implements PluginPlatformAPI {
             return response;
         };
 
+        if (!this.adapter) {
+            throw new Error("Cannot register route before platform is mounted");
+        }
+
         this.adapter.registerRoute(
             route.method as HttpMethod,
             route.path,
@@ -290,7 +294,7 @@ export class APIForge implements PluginPlatformAPI {
 
     private resolveConfig(userConfig: APIForgeConfig): ResolvedConfig {
         return {
-            adapter: this.adapter,
+            adapter: this.adapter as FrameworkAdapter, // Will be set at mount time
             app: { ...DEFAULT_CONFIG.app, ...userConfig.app },
             auth: {
                 currentUser: userConfig.auth?.currentUser ?? (() => null),
@@ -319,7 +323,11 @@ export class APIForge implements PluginPlatformAPI {
                 pages: { ...DEFAULT_CONFIG.portal.pages, ...userConfig.portal?.pages },
                 codeExamples: userConfig.portal?.codeExamples ?? [...DEFAULT_CONFIG.portal.codeExamples],
             },
-            docs: { ...DEFAULT_CONFIG.docs, ...userConfig.docs },
+            docs: {
+                enabled: userConfig.docs?.enabled ?? DEFAULT_CONFIG.docs.enabled,
+                export: userConfig.docs?.export ?? [...DEFAULT_CONFIG.docs.export],
+                groupBy: userConfig.docs?.groupBy ?? DEFAULT_CONFIG.docs.groupBy,
+            },
             plugins: this.plugins,
             hooks: userConfig.hooks ?? {},
         };

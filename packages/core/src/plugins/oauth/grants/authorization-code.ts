@@ -5,7 +5,6 @@ import type { TokenService } from "../tokens";
 import { Response } from "../../../abstractions/response";
 import { OAuthErrors } from "../../../utils/errors";
 import { verifySecret, verifyCodeChallenge } from "../../../utils/crypto";
-import { parseScopes, validateRequestedScopes } from "../scopes";
 
 /**
  * Token endpoint handler for authorization_code grant

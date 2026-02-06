@@ -16,18 +16,17 @@ async function seed() {
     const clientSecret = generateClientSecret();
     const secretHash = hashSecret(clientSecret);
 
-    await storage.storeClient({
+    await storage.createClient({
         clientId,
         clientSecretHash: secretHash,
         name: "Test Application",
+        ownerId: "system",
         description: "A test OAuth client for development",
         redirectUris: ["http://localhost:3000/callback"],
         grantTypes: ["client_credentials", "authorization_code", "refresh_token"],
         scopes: ["read:users", "write:users", "read:products"],
         isConfidential: true,
         isActive: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
     });
 
     console.log("Test OAuth Client Created");

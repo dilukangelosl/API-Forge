@@ -1,4 +1,4 @@
-import type { APIForgePlugin, RouteDefinition, PluginPlatformAPI } from "../../abstractions/plugin";
+import type { APIForgePlugin, PluginPlatformAPI } from "../../abstractions/plugin";
 import type { APIForgeContext } from "../../abstractions/context";
 import type { APIForgeResponse } from "../../abstractions/response";
 import type { StorageAdapter } from "../../abstractions/storage";
@@ -240,8 +240,8 @@ export function oauthPlugin(pluginConfig: OAuthPluginConfig): APIForgePlugin {
                 ctx.request.oauth = {
                     clientId: claims.client_id,
                     scopes: claims.scope.split(" "),
-                    userId: claims.user_id,
                     expiresAt: claims.exp * 1000,
+                    ...(claims.user_id && { userId: claims.user_id }),
                 };
                 return;
             }
@@ -252,8 +252,8 @@ export function oauthPlugin(pluginConfig: OAuthPluginConfig): APIForgePlugin {
                 ctx.request.oauth = {
                     clientId: tokenRecord.clientId,
                     scopes: tokenRecord.scopes,
-                    userId: tokenRecord.userId,
                     expiresAt: tokenRecord.expiresAt.getTime(),
+                    ...(tokenRecord.userId && { userId: tokenRecord.userId }),
                 };
                 return;
             }

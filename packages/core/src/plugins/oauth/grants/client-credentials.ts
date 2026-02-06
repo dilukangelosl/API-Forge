@@ -1,7 +1,7 @@
 import type { APIForgeContext } from "../../../abstractions/context";
 import type { APIForgeResponse } from "../../../abstractions/response";
-import type { StorageAdapter, OAuthClient } from "../../../abstractions/storage";
-import type { TokenService, TokenPair } from "../tokens";
+import type { StorageAdapter } from "../../../abstractions/storage";
+import type { TokenService } from "../tokens";
 import { Response } from "../../../abstractions/response";
 import { OAuthErrors } from "../../../utils/errors";
 import { verifySecret } from "../../../utils/crypto";
@@ -18,7 +18,7 @@ export async function handleClientCredentialsGrant(params: {
     tokenService: TokenService;
     allowedScopes: string[];
 }): Promise<APIForgeResponse> {
-    const { ctx, storage, tokenService, allowedScopes } = params;
+    const { ctx, storage, tokenService, allowedScopes: _allowedScopes } = params;
     const body = ctx.request.body as Record<string, unknown>;
 
     // Validate grant type

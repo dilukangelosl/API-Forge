@@ -2,7 +2,6 @@ import type { APIForgePlugin, PluginPlatformAPI } from "../../abstractions/plugi
 import type { APIForgeContext } from "../../abstractions/context";
 import type { APIForgeResponse } from "../../abstractions/response";
 import type { StorageAdapter } from "../../abstractions/storage";
-import type { RouteMetadata } from "../../abstractions/plugin";
 import { Response } from "../../abstractions/response";
 import { parseRateLimit } from "../../core/config";
 
@@ -39,8 +38,7 @@ export function rateLimitPlugin(config: RateLimitPluginConfig = {}): APIForgePlu
 
     let storage: StorageAdapter;
 
-    // Parse global limit
-    const { requests: globalRequests, windowMs: globalWindowMs } = parseRateLimit(globalLimit as `${number}/${"sec" | "min" | "hour" | "day"}`);
+    // Parse global limit at runtime per-request
 
     return {
         name: "rate-limit",
@@ -108,4 +106,4 @@ export function rateLimitPlugin(config: RateLimitPluginConfig = {}): APIForgePlu
     };
 }
 
-export type { RateLimitInfo };
+

@@ -88,7 +88,7 @@ forge
                 });
             }
 
-            return Response.notFound("User", id);
+            return Response.notFound(`User ${id} not found`);
         },
     })
     .endpoint({

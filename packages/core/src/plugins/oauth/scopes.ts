@@ -1,7 +1,6 @@
 import type { APIForgeContext } from "../../abstractions/context";
 import type { APIForgeResponse } from "../../abstractions/response";
 import { Response } from "../../abstractions/response";
-import { OAuthErrors } from "../../utils/errors";
 
 /**
  * Scope enforcement middleware
