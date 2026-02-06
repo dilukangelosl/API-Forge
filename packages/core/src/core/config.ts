@@ -180,8 +180,8 @@ export type StorageConfig =
  * Main API Forge configuration
  */
 export interface APIForgeConfig {
-    /** Framework adapter (required) */
-    adapter: FrameworkAdapter;
+    /** Framework adapter (optional, can be provided at mount time) */
+    adapter?: FrameworkAdapter;
 
     /** App identity */
     app?: AppConfig;

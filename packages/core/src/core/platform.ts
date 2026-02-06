@@ -99,17 +99,18 @@ export class APIDefinition {
  * Main API Forge platform class
  */
 export class APIForge implements PluginPlatformAPI {
-    private adapter: FrameworkAdapter;
+    private adapter: FrameworkAdapter | null = null;
     private storage: StorageAdapter;
     private router: Router;
     private config: ResolvedConfig;
     private plugins: APIForgePlugin[] = [];
     private apis: APIDefinition[] = [];
     private initialized = false;
+    // @ts-expect-error: mountPath will be used for portal routes
     private mountPath = "";
 
-    constructor(userConfig: APIForgeConfig) {
-        this.adapter = userConfig.adapter;
+    constructor(userConfig: APIForgeConfig = {}) {
+        this.adapter = userConfig.adapter ?? null;
         this.router = new Router();
 
         // Resolve storage adapter
@@ -118,10 +119,18 @@ export class APIForge implements PluginPlatformAPI {
         // Merge configuration with defaults
         this.config = this.resolveConfig(userConfig);
 
-        // Initialize plugins
+        // Initialize plugins from config
         if (userConfig.plugins) {
             this.plugins = userConfig.plugins;
         }
+    }
+
+    /**
+     * Add a plugin to the platform
+     */
+    use(plugin: APIForgePlugin): this {
+        this.plugins.push(plugin);
+        return this;
     }
 
     /**
@@ -175,12 +184,13 @@ export class APIForge implements PluginPlatformAPI {
      * Mount the platform at a path
      * This registers all routes with the framework adapter
      */
-    async mount(path: string = "/developer"): Promise<void> {
+    async mount(adapter: FrameworkAdapter): Promise<void> {
         if (this.initialized) {
             throw new Error("Platform already mounted");
         }
 
-        this.mountPath = path;
+        this.adapter = adapter;
+        this.mountPath = "/";
 
         // Initialize storage
         await this.storage.initialize?.();
