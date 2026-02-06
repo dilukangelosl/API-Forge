@@ -1,6 +1,6 @@
 import type { APIForgeRequest, HttpMethod } from "../abstractions/request";
 import type { APIForgeResponse } from "../abstractions/response";
-import type { RouteDefinition, RouteMetadata } from "../abstractions/plugin";
+import type { RouteDefinition } from "../abstractions/plugin";
 import { Response } from "../abstractions/response";
 
 /**

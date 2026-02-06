@@ -16,6 +16,10 @@ export { MemoryStorageAdapter } from "./storage/memory";
 export * from "./utils/crypto";
 export * from "./utils/errors";
 
+// Plugins
+export { oauthPlugin } from "./plugins/oauth";
+export { rateLimitPlugin } from "./plugins/rate-limit";
+
 // Re-export commonly used types for convenience
 export type {
     APIForgeRequest,
