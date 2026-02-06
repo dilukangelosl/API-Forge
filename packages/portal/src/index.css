@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+/* Custom design tokens */
+:root {
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-surface: #0f172a;
+    --color-surface-2: #1e293b;
+    --color-border: #334155;
+    --color-text: #f1f5f9;
+    --color-text-muted: #94a3b8;
+}
+
+/* Base styles */
+body {
+    @apply bg-slate-950 text-slate-100 font-sans antialiased;
+}
+
+/* Custom utilities */
+.glass {
+    @apply bg-slate-900/80 backdrop-blur-xl border border-slate-800;
+}
+
+.glow {
+    box-shadow: 0 0 40px -10px rgba(59, 130, 246, 0.5);
+}
