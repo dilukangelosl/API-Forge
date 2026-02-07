@@ -1,0 +1,45 @@
+{
+    "name": "@api-forge/storage-drizzle",
+    "version": "0.1.0",
+    "description": "Drizzle ORM storage adapter for API Forge OAuth",
+    "author": "Diluk Angelo <dilukangelo@gmail.com>",
+    "license": "MIT",
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./schema": {
+            "import": "./dist/schema.js",
+            "types": "./dist/schema.d.ts"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "bun build ./src/index.ts --outdir ./dist --target bun",
+        "dev": "bun --watch ./src/index.ts",
+        "test": "bun test"
+    },
+    "peerDependencies": {
+        "@api-forge/core": ">=0.1.0",
+        "drizzle-orm": "^0.29.0"
+    },
+    "peerDependenciesMeta": {
+        "drizzle-orm": {
+            "optional": false
+        }
+    },
+    "devDependencies": {
+        "@api-forge/core": "workspace:*",
+        "@types/bun": "latest",
+        "bun-types": "^1.3.8",
+        "drizzle-orm": "^0.29.0",
+        "typescript": "^5.4.0"
+    }
+}

@@ -1,0 +1,107 @@
+// Prisma schema for API Forge OAuth
+// Copy this to your project's schema.prisma or use as reference
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// OAuth Clients (Applications)
+model OAuthClient {
+  id               String   @id @default(cuid())
+  clientId         String   @unique
+  clientSecretHash String?
+  name             String
+  description      String?
+  redirectUris     String[]
+  grantTypes       String[]
+  scopes           String[]
+  isConfidential   Boolean  @default(true)
+  ownerId          String
+  logoUrl          String?
+  websiteUrl       String?
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  tokens    OAuthToken[]
+  authCodes OAuthAuthCode[]
+  consents  OAuthConsent[]
+
+  @@map("oauth_clients")
+}
+
+// OAuth Tokens (Access and Refresh)
+model OAuthToken {
+  id          String   @id @default(cuid())
+  token       String   @unique
+  type        String   // "access" or "refresh"
+  clientId    String
+  userId      String?
+  scopes      String[]
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  isRevoked   Boolean  @default(false)
+  accessToken String?  // For refresh tokens: the associated access token
+
+  // Relations
+  client OAuthClient @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("oauth_tokens")
+}
+
+// Authorization Codes (temporary, consumed during token exchange)
+model OAuthAuthCode {
+  id                  String   @id @default(cuid())
+  code                String   @unique
+  clientId            String
+  userId              String
+  redirectUri         String
+  scopes              String[]
+  codeChallenge       String?
+  codeChallengeMethod String?  // "S256" or "plain"
+  expiresAt           DateTime
+  createdAt           DateTime @default(now())
+  consumed            Boolean  @default(false)
+
+  // Relations
+  client OAuthClient @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([expiresAt])
+  @@map("oauth_auth_codes")
+}
+
+// Rate Limiting
+model OAuthRateLimit {
+  id      String   @id @default(cuid())
+  key     String   @unique
+  count   Int      @default(0)
+  resetAt DateTime
+
+  @@index([resetAt])
+  @@map("oauth_rate_limits")
+}
+
+// User Consent Records
+model OAuthConsent {
+  id        String   @id @default(cuid())
+  userId    String
+  clientId  String
+  scopes    String[]
+  createdAt DateTime @default(now())
+
+  // Relations
+  client OAuthClient @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+
+  @@unique([userId, clientId])
+  @@map("oauth_consents")
+}
