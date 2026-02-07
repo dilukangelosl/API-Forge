@@ -43,6 +43,7 @@ export function expressAdapter(app: Application): FrameworkAdapter {
                 params: req.params as Record<string, string>,
                 body: req.body,
                 ip,
+                _originalRequest: req, // Include original Express request for session access
             };
         },
 

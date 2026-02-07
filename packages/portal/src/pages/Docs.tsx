@@ -9,11 +9,11 @@ interface Endpoint {
 }
 
 const methodColors: Record<string, string> = {
-    GET: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-    POST: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-    PUT: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-    PATCH: "bg-orange-500/20 text-orange-400 border-orange-500/30",
-    DELETE: "bg-red-500/20 text-red-400 border-red-500/30",
+    GET: "bg-emerald-100 text-emerald-700 border-emerald-200",
+    POST: "bg-blue-100 text-blue-700 border-blue-200",
+    PUT: "bg-amber-100 text-amber-700 border-amber-200",
+    PATCH: "bg-orange-100 text-orange-700 border-orange-200",
+    DELETE: "bg-red-100 text-red-700 border-red-200",
 };
 
 export function DocsPage() {
@@ -61,7 +61,7 @@ export function DocsPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
-                <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
+                <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
             </div>
         );
     }
@@ -69,8 +69,8 @@ export function DocsPage() {
     return (
         <div className="flex h-[calc(100vh-4rem)]">
             {/* Sidebar */}
-            <div className="w-80 border-r border-slate-700 flex flex-col">
-                <div className="p-4 border-b border-slate-700">
+            <div className="w-80 border-r border-slate-200 flex flex-col bg-white">
+                <div className="p-4 border-b border-slate-200">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                         <input
@@ -78,7 +78,7 @@ export function DocsPage() {
                             placeholder="Search endpoints..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                            className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:border-blue-500 transition-colors"
                         />
                     </div>
                 </div>
@@ -88,8 +88,8 @@ export function DocsPage() {
                         <button
                             key={i}
                             onClick={() => setSelectedEndpoint(endpoint)}
-                            className={`w-full flex items-center gap-3 px-4 py-3 border-b border-slate-800 hover:bg-slate-800/50 transition-colors ${
-                                selectedEndpoint?.path === endpoint.path ? "bg-slate-800/70" : ""
+                            className={`w-full flex items-center gap-3 px-4 py-3 border-b border-slate-100 hover:bg-slate-50 transition-colors ${
+                                selectedEndpoint?.path === endpoint.path ? "bg-slate-100" : ""
                             }`}
                         >
                             <span
@@ -99,17 +99,17 @@ export function DocsPage() {
                             >
                                 {endpoint.method}
                             </span>
-                            <span className="flex-1 text-left text-sm font-mono text-slate-300 truncate">
+                            <span className="flex-1 text-left text-sm font-mono text-slate-600 truncate">
                                 {endpoint.path}
                             </span>
-                            <ChevronRight className="w-4 h-4 text-slate-500" />
+                            <ChevronRight className="w-4 h-4 text-slate-400" />
                         </button>
                     ))}
                 </div>
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 overflow-y-auto p-8">
+            <div className="flex-1 overflow-y-auto p-8 bg-white">
                 {selectedEndpoint && (
                     <>
                         <div className="mb-8">
@@ -121,23 +121,23 @@ export function DocsPage() {
                                 >
                                     {selectedEndpoint.method}
                                 </span>
-                                <code className="text-xl font-mono">
+                                <code className="text-xl font-mono text-slate-900">
                                     {selectedEndpoint.path}
                                 </code>
                             </div>
-                            <p className="text-slate-400">{selectedEndpoint.description}</p>
+                            <p className="text-slate-500">{selectedEndpoint.description}</p>
                         </div>
 
                         {selectedEndpoint.scopes && selectedEndpoint.scopes.length > 0 && (
                             <div className="mb-8">
-                                <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">
+                                <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">
                                     Required Scopes
                                 </h3>
                                 <div className="flex gap-2 flex-wrap">
                                     {selectedEndpoint.scopes.map((scope) => (
                                         <span
                                             key={scope}
-                                            className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm"
+                                            className="px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm"
                                         >
                                             {scope}
                                         </span>
@@ -148,16 +148,16 @@ export function DocsPage() {
 
                         <div className="mb-8">
                             <div className="flex items-center justify-between mb-3">
-                                <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide">
+                                <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
                                     Example Request
                                 </h3>
                                 <button
                                     onClick={copyCode}
-                                    className="flex items-center gap-1.5 px-2 py-1 text-xs text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded transition-colors"
+                                    className="flex items-center gap-1.5 px-2 py-1 text-xs text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded transition-colors"
                                 >
                                     {copied ? (
                                         <>
-                                            <Check className="w-3 h-3 text-emerald-400" />
+                                            <Check className="w-3 h-3 text-emerald-500" />
                                             Copied!
                                         </>
                                     ) : (
@@ -170,11 +170,11 @@ export function DocsPage() {
                             </div>
                             <div className="relative">
                                 <div className="absolute top-3 left-3 flex items-center gap-2">
-                                    <Code2 className="w-4 h-4 text-slate-500" />
-                                    <span className="text-xs text-slate-500 font-mono">curl</span>
+                                    <Code2 className="w-4 h-4 text-slate-400" />
+                                    <span className="text-xs text-slate-400 font-mono">curl</span>
                                 </div>
-                                <pre className="bg-slate-950 border border-slate-800 rounded-xl p-6 pt-10 overflow-x-auto">
-                                    <code className="text-sm text-slate-300 font-mono">
+                                <pre className="bg-slate-900 border border-slate-200 rounded-xl p-6 pt-10 overflow-x-auto">
+                                    <code className="text-sm text-slate-100 font-mono">
                                         {`curl -X ${selectedEndpoint.method} "http://localhost:3000${selectedEndpoint.path}" \\
   -H "Authorization: Bearer YOUR_TOKEN" \\
   -H "Content-Type: application/json"`}

@@ -1,11 +1,10 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { Book, AppWindow, Terminal, Settings, Zap } from "lucide-react";
+import { Book, AppWindow, Terminal, Zap } from "lucide-react";
 
 const navItems = [
     { path: "/docs", label: "Documentation", icon: Book },
     { path: "/apps", label: "Applications", icon: AppWindow },
     { path: "/console", label: "API Console", icon: Terminal },
-    { path: "/settings", label: "Settings", icon: Settings },
 ];
 
 export function Layout() {

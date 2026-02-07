@@ -31,6 +31,9 @@ export interface APIForgeRequest {
 
     /** OAuth context (set by OAuth middleware if authenticated) */
     oauth?: OAuthRequestContext;
+
+    /** Original framework request (for session access, etc.) */
+    _originalRequest?: unknown;
 }
 
 /**
