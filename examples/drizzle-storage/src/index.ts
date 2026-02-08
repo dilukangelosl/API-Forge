@@ -83,7 +83,7 @@ forge
         description: "Create a user",
         scopes: ["write:users"],
         handler: async (ctx) => {
-            const body = ctx.body as { email: string; name?: string; password: string };
+            const body = ctx.request.body as { email: string; name?: string; password: string };
             const user = {
                 id: generateId(),
                 email: body.email,
@@ -107,10 +107,10 @@ forge
                 email: schema.users.email,
                 name: schema.users.name,
                 createdAt: schema.users.createdAt,
-            }).from(schema.users).where(eq(schema.users.id, ctx.params.id)).limit(1);
+            }).from(schema.users).where(eq(schema.users.id, ctx.request.params.id)).limit(1);
 
             if (!users[0]) {
-                return Response.notFound({ error: "User not found" });
+                return Response.notFound("User not found");
             }
             return Response.ok({ user: users[0] });
         },

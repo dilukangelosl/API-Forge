@@ -74,7 +74,7 @@ forge
         description: "Create a user",
         scopes: ["write:users"],
         handler: async (ctx) => {
-            const body = ctx.body as { email: string; name?: string; password: string };
+            const body = ctx.request.body as { email: string; name?: string; password: string };
             const user = await prisma.user.create({
                 data: {
                     email: body.email,
@@ -92,11 +92,11 @@ forge
         scopes: ["read:users"],
         handler: async (ctx) => {
             const user = await prisma.user.findUnique({
-                where: { id: ctx.params.id },
+                where: { id: ctx.request.params.id },
                 select: { id: true, email: true, name: true, createdAt: true },
             });
             if (!user) {
-                return Response.notFound({ error: "User not found" });
+                return Response.notFound("User not found");
             }
             return Response.ok({ user });
         },
