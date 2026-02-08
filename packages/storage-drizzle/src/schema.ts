@@ -1,4 +1,4 @@
-import { pgTable, varchar, text, boolean, timestamp, integer, primaryKey, uniqueIndex, index } from "drizzle-orm/pg-core";
+import { pgTable, varchar, text, boolean, timestamp, integer, uniqueIndex, index } from "drizzle-orm/pg-core";
 
 /**
  * OAuth Clients (Applications)

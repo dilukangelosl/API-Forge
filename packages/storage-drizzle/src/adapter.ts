@@ -127,7 +127,7 @@ export class DrizzleStorageAdapter implements StorageAdapter {
     }
 
     async deleteClient(clientId: string): Promise<boolean> {
-        const result = await this.db
+        await this.db
             .delete(oauthClients)
             .where(eq(oauthClients.clientId, clientId));
 
@@ -198,7 +198,7 @@ export class DrizzleStorageAdapter implements StorageAdapter {
     }
 
     async revokeAllClientTokens(clientId: string): Promise<number> {
-        const result = await this.db
+        await this.db
             .update(oauthTokens)
             .set({ isRevoked: true })
             .where(and(
@@ -492,7 +492,7 @@ export class DrizzleStorageAdapter implements StorageAdapter {
             redirectUri: row.redirectUri,
             scopes: row.scopes || [],
             codeChallenge: row.codeChallenge,
-            codeChallengeMethod: row.codeChallengeMethod as "S256" | "plain" | undefined,
+            codeChallengeMethod: row.codeChallengeMethod ?? undefined,
             expiresAt: new Date(row.expiresAt),
             createdAt: new Date(row.createdAt),
         };

@@ -402,7 +402,7 @@ export class PrismaStorageAdapter implements StorageAdapter {
             redirectUri: data.redirectUri,
             scopes: data.scopes,
             codeChallenge: data.codeChallenge,
-            codeChallengeMethod: data.codeChallengeMethod as "S256" | "plain" | undefined,
+            codeChallengeMethod: data.codeChallengeMethod ?? undefined,
             expiresAt: new Date(data.expiresAt),
             createdAt: new Date(data.createdAt),
         };

@@ -1,4 +1,4 @@
-import type { APIForgePlugin, PluginPlatformAPI, RouteDefinition, APIForgeResponse } from "@api-forge/core";
+import type { APIForgePlugin, PluginPlatformAPI, APIForgeResponse } from "@api-forge/core";
 import { Response } from "@api-forge/core";
 import { generateOpenAPISpec } from "./generator";
 import { getScalarUI } from "./viewer";
@@ -43,14 +43,14 @@ export function openapiPlugin(options: OpenAPIPluginOptions = {}): APIForgePlugi
                         cachedSpec = generateOpenAPISpec(allRoutes, {
                             title: options.title ?? "API Forge API",
                             version: options.version ?? "1.0.0",
-                            description: options.description,
+                            ...(options.description && { description: options.description }),
                             servers: options.servers ?? [
                                 { url: config?.auth?.issuer ?? "http://localhost:3000", description: "API Server" }
                             ],
-                            contact: options.contact,
-                            license: options.license,
-                            oauthFlows: config?.auth?.grants,
-                            scopes: config?.auth?.scopes,
+                            ...(options.contact && { contact: options.contact }),
+                            ...(options.license && { license: options.license }),
+                            ...(config?.auth?.grants && { oauthFlows: config.auth.grants }),
+                            ...(config?.auth?.scopes && { scopes: config.auth.scopes }),
                             includeOAuthEndpoints: options.includeOAuthEndpoints ?? true,
                         });
                     }
