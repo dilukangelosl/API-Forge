@@ -1,0 +1,115 @@
+// Prisma schema for API Forge OAuth with example User model
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// =====================================
+// Your Application Models
+// =====================================
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// =====================================
+// API Forge OAuth Models
+// Copy these to your existing schema
+// =====================================
+
+model OAuthClient {
+  id               String   @id @default(cuid())
+  clientId         String   @unique
+  clientSecretHash String?
+  name             String
+  description      String?
+  redirectUris     String   // JSON array stored as string for SQLite
+  grantTypes       String   // JSON array stored as string for SQLite
+  scopes           String   // JSON array stored as string for SQLite
+  isConfidential   Boolean  @default(true)
+  ownerId          String
+  logoUrl          String?
+  websiteUrl       String?
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  tokens    OAuthToken[]
+  authCodes OAuthAuthCode[]
+  consents  OAuthConsent[]
+
+  @@map("oauth_clients")
+}
+
+model OAuthToken {
+  id          String   @id @default(cuid())
+  token       String   @unique
+  type        String   // "access" or "refresh"
+  clientId    String
+  userId      String?
+  scopes      String   // JSON array stored as string for SQLite
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  isRevoked   Boolean  @default(false)
+  accessToken String?  // For refresh tokens
+
+  client OAuthClient @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("oauth_tokens")
+}
+
+model OAuthAuthCode {
+  id                  String   @id @default(cuid())
+  code                String   @unique
+  clientId            String
+  userId              String
+  redirectUri         String
+  scopes              String   // JSON array stored as string for SQLite
+  codeChallenge       String?
+  codeChallengeMethod String?  // "S256" or "plain"
+  expiresAt           DateTime
+  createdAt           DateTime @default(now())
+  consumed            Boolean  @default(false)
+
+  client OAuthClient @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([expiresAt])
+  @@map("oauth_auth_codes")
+}
+
+model OAuthRateLimit {
+  id      String   @id @default(cuid())
+  key     String   @unique
+  count   Int      @default(0)
+  resetAt DateTime
+
+  @@index([resetAt])
+  @@map("oauth_rate_limits")
+}
+
+model OAuthConsent {
+  id        String   @id @default(cuid())
+  userId    String
+  clientId  String
+  scopes    String   // JSON array stored as string for SQLite
+  createdAt DateTime @default(now())
+
+  client OAuthClient @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+
+  @@unique([userId, clientId])
+  @@map("oauth_consents")
+}
