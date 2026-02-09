@@ -64,7 +64,12 @@ export interface AuditLoggerConfig {
  * Security audit logger
  */
 export class AuditLogger {
-    private config: Required<Omit<AuditLoggerConfig, "handler">> & Pick<AuditLoggerConfig, "handler">;
+    private config: {
+        enabled: boolean;
+        console: boolean;
+        handler?: (log: SecurityAuditLog) => void | Promise<void>;
+        events: SecurityEventType[];
+    };
     private logs: SecurityAuditLog[] = [];
     private maxInMemoryLogs = 1000;
 
@@ -72,9 +77,11 @@ export class AuditLogger {
         this.config = {
             enabled: config.enabled ?? true,
             console: config.console ?? process.env.NODE_ENV !== "production",
-            handler: config.handler,
             events: config.events ?? [],
         };
+        if (config.handler) {
+            this.config.handler = config.handler;
+        }
     }
 
     /**
@@ -129,10 +136,10 @@ export class AuditLogger {
         await this.log({
             event: "token_issued",
             clientId: params.clientId,
-            userId: params.userId,
             ip: params.ip,
-            userAgent: params.userAgent,
             outcome: "success",
+            ...(params.userId && { userId: params.userId }),
+            ...(params.userAgent && { userAgent: params.userAgent }),
             metadata: {
                 scopes: params.scopes,
                 grantType: params.grantType,
@@ -152,12 +159,12 @@ export class AuditLogger {
     }): Promise<void> {
         await this.log({
             event: "auth_failed",
-            clientId: params.clientId,
             ip: params.ip,
-            userAgent: params.userAgent,
-            path: params.path,
             outcome: "failure",
             reason: params.reason,
+            ...(params.clientId && { clientId: params.clientId }),
+            ...(params.userAgent && { userAgent: params.userAgent }),
+            ...(params.path && { path: params.path }),
         });
     }
 
@@ -171,10 +178,10 @@ export class AuditLogger {
     }): Promise<void> {
         await this.log({
             event: "brute_force_detected",
-            clientId: params.clientId,
             ip: params.ip,
             outcome: "failure",
             reason: `${params.attempts} failed attempts detected`,
+            ...(params.clientId && { clientId: params.clientId }),
         });
     }
 

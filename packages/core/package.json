@@ -26,7 +26,8 @@
         "README.md"
     ],
     "scripts": {
-        "build": "bun build ./src/index.ts --outdir ./dist --target bun",
+        "build": "bun build ./src/index.ts --outdir ./dist --target bun && tsc --emitDeclarationOnly --declaration --declarationDir ./dist",
+        "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir ./dist",
         "dev": "bun --watch ./src/index.ts",
         "test": "bun test"
     },
