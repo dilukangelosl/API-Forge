@@ -36,7 +36,7 @@ describe("OAuth 2.0 Client Credentials Flow - Storage", () => {
 
         await storage.createClient({
             clientId,
-            clientSecretHash: hashSecret(clientSecret),
+            clientSecretHash: await hashSecret(clientSecret),
             name: "Test Client",
             redirectUris: [],
             grantTypes: ["client_credentials"],
@@ -66,8 +66,8 @@ describe("OAuth 2.0 Client Credentials Flow - Storage", () => {
         expect(client).not.toBeNull();
         expect(client!.clientSecretHash).toBeDefined();
 
-        // Secret hash should be in format: salt$hash
-        expect(client!.clientSecretHash).toContain("$");
+        // Argon2id hash format: $argon2id$...
+        expect(client!.clientSecretHash?.startsWith("$argon2id$")).toBe(true);
     });
 
     test("should return null for unknown client", async () => {

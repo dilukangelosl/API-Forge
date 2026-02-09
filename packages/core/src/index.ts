@@ -15,6 +15,7 @@ export { MemoryStorageAdapter } from "./storage/memory";
 // Utils
 export * from "./utils/crypto";
 export * from "./utils/errors";
+export * from "./utils/audit";
 
 // Plugins
 export { oauthPlugin } from "./plugins/oauth";

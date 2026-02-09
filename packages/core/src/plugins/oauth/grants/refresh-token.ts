@@ -4,7 +4,7 @@ import type { StorageAdapter } from "../../../abstractions/storage";
 import type { TokenService } from "../tokens";
 import { Response } from "../../../abstractions/response";
 import { OAuthErrors } from "../../../utils/errors";
-import { verifySecret } from "../../../utils/crypto";
+import { verifySecretAuto } from "../../../utils/crypto";
 
 /**
  * Refresh token grant handler
@@ -92,7 +92,7 @@ export async function handleRefreshTokenGrant(params: {
             return Response.json(400, error.toJSON());
         }
 
-        if (!client.clientSecretHash || !verifySecret(clientSecret, client.clientSecretHash)) {
+        if (!client.clientSecretHash || !await verifySecretAuto(clientSecret, client.clientSecretHash)) {
             const error = OAuthErrors.invalidClient("Invalid client secret");
             return Response.json(401, error.toJSON());
         }

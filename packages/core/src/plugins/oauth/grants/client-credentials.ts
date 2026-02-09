@@ -4,7 +4,7 @@ import type { StorageAdapter } from "../../../abstractions/storage";
 import type { TokenService } from "../tokens";
 import { Response } from "../../../abstractions/response";
 import { OAuthErrors } from "../../../utils/errors";
-import { verifySecret } from "../../../utils/crypto";
+import { verifySecretAuto } from "../../../utils/crypto";
 import { parseScopes, validateRequestedScopes } from "../scopes";
 
 /**
@@ -53,7 +53,7 @@ export async function handleClientCredentialsGrant(params: {
     }
 
     // Verify client secret
-    if (!verifySecret(clientSecret, client.clientSecretHash)) {
+    if (!await verifySecretAuto(clientSecret, client.clientSecretHash)) {
         const error = OAuthErrors.invalidClient("Invalid client secret");
         return Response.json(401, error.toJSON());
     }

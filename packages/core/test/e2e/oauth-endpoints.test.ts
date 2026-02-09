@@ -35,7 +35,7 @@ describe("OAuth Token Endpoint - Client Credentials (Storage)", () => {
 
         await storage.createClient({
             clientId,
-            clientSecretHash: hashSecret(clientSecret),
+            clientSecretHash: await hashSecret(clientSecret),
             name: "OAuth Endpoint Test Client",
             redirectUris: ["http://localhost:8080/callback"],
             grantTypes: ["client_credentials", "authorization_code", "refresh_token"],
@@ -60,8 +60,8 @@ describe("OAuth Token Endpoint - Client Credentials (Storage)", () => {
     test("should validate client secret hash format", async () => {
         const client = await storage.getClient(clientId);
         expect(client).not.toBeNull();
-        // Hash format: salt$hash
-        expect(client!.clientSecretHash).toContain("$");
+        // Argon2id hash format: $argon2id$...
+        expect(client!.clientSecretHash?.startsWith("$argon2id$")).toBe(true);
     });
 
     test("should reject unknown client_id", async () => {
@@ -123,7 +123,7 @@ describe("OAuth Token Endpoint - Authorization Code (Storage)", () => {
 
         await storage.createClient({
             clientId,
-            clientSecretHash: hashSecret(clientSecret),
+            clientSecretHash: await hashSecret(clientSecret),
             name: "Auth Code Endpoint Test Client",
             redirectUris: [REDIRECT_URI],
             grantTypes: ["authorization_code", "refresh_token"],
@@ -251,7 +251,7 @@ describe("OAuth Token Endpoint - Refresh Token (Storage)", () => {
 
         await storage.createClient({
             clientId,
-            clientSecretHash: hashSecret(clientSecret),
+            clientSecretHash: await hashSecret(clientSecret),
             name: "Refresh Token Endpoint Test Client",
             redirectUris: [],
             grantTypes: ["client_credentials", "refresh_token"],
@@ -329,7 +329,7 @@ describe("OAuth Token Endpoint - Inactive Client (Storage)", () => {
 
         await storage.createClient({
             clientId,
-            clientSecretHash: hashSecret(clientSecret),
+            clientSecretHash: await hashSecret(clientSecret),
             name: "Inactive Client",
             redirectUris: [],
             grantTypes: ["client_credentials"],

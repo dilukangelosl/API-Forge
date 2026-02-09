@@ -44,23 +44,23 @@ describe("Crypto Utils", () => {
     });
 
     describe("Secret Hashing and Verification", () => {
-        test("verifySecret should return true for correct secret", () => {
+        test("verifySecret should return true for correct secret", async () => {
             const secret = "correct_secret";
-            const hash = hashSecret(secret);
+            const hash = await hashSecret(secret);
 
-            expect(verifySecret(secret, hash)).toBe(true);
+            expect(await verifySecret(secret, hash)).toBe(true);
         });
 
-        test("verifySecret should return false for incorrect secret", () => {
+        test("verifySecret should return false for incorrect secret", async () => {
             const secret = "correct_secret";
-            const hash = hashSecret(secret);
+            const hash = await hashSecret(secret);
 
-            expect(verifySecret("wrong_secret", hash)).toBe(false);
+            expect(await verifySecret("wrong_secret", hash)).toBe(false);
         });
 
-        test("different secrets should produce different hashes", () => {
-            const hash1 = hashSecret("secret1");
-            const hash2 = hashSecret("secret2");
+        test("different secrets should produce different hashes", async () => {
+            const hash1 = await hashSecret("secret1");
+            const hash2 = await hashSecret("secret2");
 
             expect(hash1).not.toBe(hash2);
         });

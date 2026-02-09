@@ -31,8 +31,9 @@
         "test": "bun test"
     },
     "dependencies": {
-        "zod": "^3.22.0",
-        "jose": "^5.2.0"
+        "argon2": "^0.44.0",
+        "jose": "^5.2.0",
+        "zod": "^3.22.0"
     },
     "peerDependencies": {
         "ioredis": "^5.0.0"

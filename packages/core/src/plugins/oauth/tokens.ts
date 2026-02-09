@@ -78,7 +78,7 @@ export class TokenService {
 
         if (algorithmFamily === "RSA") {
             const { publicKey, privateKey } = await generateKeyPair("RS256", {
-                modulusLength: 2048,
+                modulusLength: 4096,  // 4096-bit for stronger security
             });
             this.publicKey = publicKey;
             this.privateKey = privateKey;

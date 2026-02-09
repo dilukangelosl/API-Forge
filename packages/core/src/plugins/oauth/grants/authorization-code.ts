@@ -4,7 +4,7 @@ import type { StorageAdapter } from "../../../abstractions/storage";
 import type { TokenService } from "../tokens";
 import { Response } from "../../../abstractions/response";
 import { OAuthErrors } from "../../../utils/errors";
-import { verifySecret, verifyCodeChallenge } from "../../../utils/crypto";
+import { verifySecretAuto, verifyCodeChallenge } from "../../../utils/crypto";
 
 /**
  * Token endpoint handler for authorization_code grant
@@ -87,7 +87,7 @@ export async function handleAuthorizationCodeGrant(params: {
             });
         }
 
-        if (!client.clientSecretHash || !verifySecret(clientSecret, client.clientSecretHash)) {
+        if (!client.clientSecretHash || !await verifySecretAuto(clientSecret, client.clientSecretHash)) {
             const error = OAuthErrors.invalidClient("Invalid client secret");
             return Response.json(401, error.toJSON());
         }
