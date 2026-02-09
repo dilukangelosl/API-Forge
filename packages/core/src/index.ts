@@ -30,6 +30,9 @@ export type {
     StorageAdapter,
     FrameworkAdapter,
     APIForgePlugin,
+    PluginPlatformAPI,
+    RouteDefinition,
     HttpMethod,
     RouteMetadata,
 } from "./abstractions";
+export { Response } from "./abstractions";
