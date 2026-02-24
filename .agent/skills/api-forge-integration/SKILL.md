@@ -101,6 +101,30 @@ platform.use(new OpenAPIPlugin({
 }));
 ```
 
+### 7. Developer Portal
+API Forge provides a built-in Developer Portal (React SPA) for managing OAuth apps, webhooks, and accessing API documentation. To run the portal alongside your API Forge application, you must serve the static frontend assets from your web server, making sure they don't conflict with the `forge` API routes.
+
+**Example for Express:**
+```typescript
+import path from "path";
+import express from "express";
+
+// 1. Mount forge (which claims /portal/api/* internally)
+const adapter = expressAdapter(app);
+forge.mount(adapter);
+
+// 2. Serve the static portal (React build output)
+const portalPath = path.resolve(__dirname, "node_modules/@dilukangelo/api-forge-portal/dist");
+app.use("/portal", express.static(portalPath));
+
+// 3. SPA fallback to index.html for client-side routing
+app.get("/portal/*", (req, res, next) => {
+    if (req.path.startsWith("/portal/api")) return next();
+    res.sendFile(path.join(portalPath, "index.html"));
+});
+```
+**Accessing the portal:** Once your server is running, you can access the Developer Portal by navigating to `http://localhost:<PORT>/portal/` in your browser.
+
 ## Checklist Before Implementation
 - [ ] Have I imported the packages from `@dilukangelo/api-forge-...`?
 - [ ] Am I using the API Forge `Router` instead of the raw framework router?

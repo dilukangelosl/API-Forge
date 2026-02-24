@@ -37,6 +37,7 @@ npm install @dilukangelo/api-forge-plugin-openapi
 3. **Plugin Registration**: Add plugins to the platform (e.g., `platform.use(new OpenAPIPlugin(...))`).
 4. **Router Construction**: Use `Router` from `@dilukangelo/api-forge-core` to define endpoints, applying scopes where OAuth security is needed.
 5. **Adapter Mounting**: Pass the `Platform` and `Router` to the integration adapter (e.g., `expressAdapter`) and mount it onto the host application (e.g., `app.use('/api', expressAdapter(platform, router))`).
+6. **Developer Portal (Optional but Recommended)**: API Forge ships with a React SPA package (`@dilukangelo/api-forge-portal`) to manage applications and tokens. Mount its static files to your server (e.g., at `/portal`) with an SPA fallback, then access it in your browser (`http://localhost:3000/portal/`).
 
 ## Agent Instructions
 - **Do not mix routers**: Use API Forge's `Router` for API business logic, and only use your web framework (like Express) for the top-level application bootstrapping and static file serving.
