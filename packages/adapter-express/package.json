@@ -1,6 +1,6 @@
 {
     "name": "@dilukangelo/api-forge-adapter-express",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "Express adapter for API Forge",
     "author": "Diluk Angelo <dilukangelo@gmail.com>",
     "license": "MIT",
