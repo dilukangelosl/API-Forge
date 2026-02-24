@@ -104,16 +104,23 @@ platform.use(new OpenAPIPlugin({
 ### 7. Developer Portal
 API Forge provides a built-in Developer Portal (React SPA) for managing OAuth apps, webhooks, and accessing API documentation. To run the portal alongside your API Forge application, you must serve the static frontend assets from your web server, making sure they don't conflict with the `forge` API routes.
 
+> ⚠️ **CRITICAL: CORS Middleware Order**
+> 
+> You **MUST** mount the portal static route **BEFORE** you apply any global `cors()` middleware or strict API security headers. If you mount `cors()` before the static folder, your browser will immediately block the `.js` and `.css` assets with a `500 Not allowed by CORS` error.
+
 **Example for Express:**
 ```typescript
 import path from "path";
 import express from "express";
+import cors from "cors";
+
+const app = express();
 
 // 1. Mount forge (which claims /portal/api/* internally)
 const adapter = expressAdapter(app);
 forge.mount(adapter);
 
-// 2. Serve the static portal (React build output)
+// 2. Serve the static portal (React build output) BEFORE CORS
 const portalPath = path.resolve(__dirname, "node_modules/@dilukangelo/api-forge-portal/dist");
 app.use("/portal", express.static(portalPath));
 
@@ -122,6 +129,11 @@ app.get("/portal/*", (req, res, next) => {
     if (req.path.startsWith("/portal/api")) return next();
     res.sendFile(path.join(portalPath, "index.html"));
 });
+
+// 4. NOW apply your strict CORS rules for your actual API
+app.use(cors({ origin: "https://your-frontend.com" }));
+
+// 5. Mount your custom routes here...
 ```
 **Accessing the portal:** Once your server is running, you can access the Developer Portal by navigating to `http://localhost:<PORT>/portal/` in your browser.
 
