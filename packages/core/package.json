@@ -1,6 +1,6 @@
 {
     "name": "@dilukangelo/api-forge-core",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Core API Forge library - OAuth, rate limiting, docs, and portal",
     "author": "Diluk Angelo <dilukangelo@gmail.com>",
     "license": "MIT",
@@ -26,7 +26,7 @@
         "README.md"
     ],
     "scripts": {
-        "build": "bun build ./src/index.ts ./src/storage/memory.ts --outdir ./dist --target node && tsc --emitDeclarationOnly --declaration --declarationDir ./dist",
+        "build": "bun build ./src/index.ts ./src/storage/memory.ts --packages external --outdir ./dist --target node && tsc --emitDeclarationOnly --declaration --declarationDir ./dist",
         "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir ./dist",
         "dev": "bun --watch ./src/index.ts",
         "test": "bun test"

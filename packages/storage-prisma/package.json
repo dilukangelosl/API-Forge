@@ -1,6 +1,6 @@
 {
     "name": "@dilukangelo/api-forge-storage-prisma",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Prisma storage adapter for API Forge OAuth",
     "author": "Diluk Angelo <dilukangelo@gmail.com>",
     "license": "MIT",
@@ -27,7 +27,7 @@
         "README.md"
     ],
     "scripts": {
-        "build": "bun build ./src/index.ts --outdir ./dist --target node && tsc --emitDeclarationOnly --declaration --declarationDir ./dist",
+        "build": "bun build ./src/index.ts --packages external --outdir ./dist --target node && tsc --emitDeclarationOnly --declaration --declarationDir ./dist",
         "dev": "bun --watch ./src/index.ts",
         "test": "bun test"
     },
