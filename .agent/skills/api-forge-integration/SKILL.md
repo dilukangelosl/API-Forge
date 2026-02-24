@@ -127,6 +127,7 @@ app.get("/portal/*", (req, res, next) => {
 
 ## Checklist Before Implementation
 - [ ] Have I imported the packages from `@dilukangelo/api-forge-...`?
+- [ ] Did I use the host project's correct package manager (`bun add`, `pnpm add`, `yarn add`, or `npm install`) instead of forcing `npm`?
 - [ ] Am I using the API Forge `Router` instead of the raw framework router?
 - [ ] Have I initialized the `Platform` with a valid `StorageAdapter`?
 - [ ] Did I mount the adapter (e.g., `expressAdapter`) correctly to the root app?

@@ -15,19 +15,21 @@ API Forge is a modular, framework-agnostic TypeScript toolkit for rapidly bootst
 
 Whenever interacting with packages, ensure you are utilizing the user's correct namespace: `@dilukangelo`.
 
+**IMPORTANT**: Adapt the installation commands to match the host project's package manager (`npm install`, `bun add`, `pnpm add`, or `yarn add`). Do not force `npm` if the project uses a different package manager!
+
 ```bash
 # Core
-npm install @dilukangelo/api-forge-core
+<package-manager> add @dilukangelo/api-forge-core
 
 # Adapters (choose your framework)
-npm install @dilukangelo/api-forge-adapter-express
+<package-manager> add @dilukangelo/api-forge-adapter-express
 
 # StorageBackends (choose your ORM)
-npm install @dilukangelo/api-forge-storage-prisma
-npm install @dilukangelo/api-forge-storage-drizzle
+<package-manager> add @dilukangelo/api-forge-storage-prisma
+<package-manager> add @dilukangelo/api-forge-storage-drizzle
 
 # Plugins
-npm install @dilukangelo/api-forge-plugin-openapi
+<package-manager> add @dilukangelo/api-forge-plugin-openapi
 ```
 
 ## Architecture Flow
