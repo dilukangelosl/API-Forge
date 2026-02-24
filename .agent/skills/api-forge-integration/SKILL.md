@@ -137,6 +137,12 @@ app.use(cors({ origin: "https://your-frontend.com" }));
 ```
 **Accessing the portal:** Once your server is running, you can access the Developer Portal by navigating to `http://localhost:<PORT>/portal/` in your browser.
 
+> ⚠️ **IMPORTANT: Portal APIs Must Be Defined Manually**
+>
+> The React SPAs require backend data routes under `/portal/api/*` to function (e.g. `/portal/api/apps`, `/portal/api/scopes`, `/portal/api/endpoints`). API Forge currently does *not* auto-inject these routes. 
+> 
+> You **must manually implement these endpoints** using `forge.api({ name: "portal", basePath: "/portal/api" })` depending on your own API logic. See the `examples/express-app/src/index.ts` file in the main repository for a reference implementation.
+
 ## Checklist Before Implementation
 - [ ] Have I imported the packages from `@dilukangelo/api-forge-...`?
 - [ ] Did I use the host project's correct package manager (`bun add`, `pnpm add`, `yarn add`, or `npm install`) instead of forcing `npm`?
