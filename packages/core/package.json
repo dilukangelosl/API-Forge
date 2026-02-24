@@ -1,6 +1,6 @@
 {
     "name": "@dilukangelo/api-forge-core",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Core API Forge library - OAuth, rate limiting, docs, and portal",
     "author": "Diluk Angelo <dilukangelo@gmail.com>",
     "license": "MIT",
@@ -9,12 +9,16 @@
     "types": "./dist/index.d.ts",
     "exports": {
         ".": {
+            "types": "./dist/index.d.ts",
             "import": "./dist/index.js",
-            "types": "./dist/index.d.ts"
+            "require": "./dist/index.js",
+            "default": "./dist/index.js"
         },
         "./storage/memory": {
+            "types": "./dist/storage/memory.d.ts",
             "import": "./dist/storage/memory.js",
-            "types": "./dist/storage/memory.d.ts"
+            "require": "./dist/storage/memory.js",
+            "default": "./dist/storage/memory.js"
         }
     },
     "files": [

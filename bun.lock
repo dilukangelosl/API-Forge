@@ -98,7 +98,7 @@
     },
     "packages/adapter-express": {
       "name": "@dilukangelo/api-forge-adapter-express",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "devDependencies": {
         "@dilukangelo/api-forge-core": "workspace:*",
         "@types/bun": "latest",
@@ -113,7 +113,7 @@
     },
     "packages/core": {
       "name": "@dilukangelo/api-forge-core",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "dependencies": {
         "argon2": "^0.44.0",
         "jose": "^5.2.0",
@@ -135,7 +135,7 @@
     },
     "packages/plugin-openapi": {
       "name": "@dilukangelo/api-forge-plugin-openapi",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "devDependencies": {
         "@dilukangelo/api-forge-core": "workspace:*",
         "typescript": "^5.7.3",
@@ -173,7 +173,7 @@
     },
     "packages/storage-drizzle": {
       "name": "@dilukangelo/api-forge-storage-drizzle",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "devDependencies": {
         "@dilukangelo/api-forge-core": "workspace:*",
         "@types/bun": "latest",
@@ -188,7 +188,7 @@
     },
     "packages/storage-prisma": {
       "name": "@dilukangelo/api-forge-storage-prisma",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "devDependencies": {
         "@dilukangelo/api-forge-core": "workspace:*",
         "@types/bun": "latest",

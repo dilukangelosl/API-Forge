@@ -1,6 +1,6 @@
 {
     "name": "@dilukangelo/api-forge-storage-drizzle",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Drizzle ORM storage adapter for API Forge OAuth",
     "author": "Diluk Angelo <dilukangelo@gmail.com>",
     "license": "MIT",
@@ -9,12 +9,16 @@
     "types": "./dist/index.d.ts",
     "exports": {
         ".": {
+            "types": "./dist/index.d.ts",
             "import": "./dist/index.js",
-            "types": "./dist/index.d.ts"
+            "require": "./dist/index.js",
+            "default": "./dist/index.js"
         },
         "./schema": {
+            "types": "./dist/schema.d.ts",
             "import": "./dist/schema.js",
-            "types": "./dist/schema.d.ts"
+            "require": "./dist/schema.js",
+            "default": "./dist/schema.js"
         }
     },
     "files": [

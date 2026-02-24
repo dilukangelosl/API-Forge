@@ -1,6 +1,6 @@
 {
     "name": "@dilukangelo/api-forge-plugin-openapi",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "OpenAPI 3.1 documentation generator for API Forge",
     "author": "Diluk Angelo <dilukangelo@gmail.com>",
     "license": "MIT",
@@ -9,8 +9,10 @@
     "types": "./dist/index.d.ts",
     "exports": {
         ".": {
+            "types": "./dist/index.d.ts",
             "import": "./dist/index.js",
-            "types": "./dist/index.d.ts"
+            "require": "./dist/index.js",
+            "default": "./dist/index.js"
         }
     },
     "files": [
