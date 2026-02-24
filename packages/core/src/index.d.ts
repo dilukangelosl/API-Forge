@@ -6,7 +6,10 @@ export { Router } from "./core/router";
 export { MemoryStorageAdapter } from "./storage/memory";
 export * from "./utils/crypto";
 export * from "./utils/errors";
+export * from "./utils/audit";
 export { oauthPlugin } from "./plugins/oauth";
+export type { UserAuthAdapter, AuthenticatedUser } from "./plugins/oauth";
 export { rateLimitPlugin } from "./plugins/rate-limit";
-export type { APIForgeRequest, APIForgeResponse, APIForgeContext, StorageAdapter, FrameworkAdapter, APIForgePlugin, HttpMethod, } from "./abstractions";
+export type { APIForgeRequest, APIForgeResponse, APIForgeContext, StorageAdapter, FrameworkAdapter, APIForgePlugin, PluginPlatformAPI, RouteDefinition, HttpMethod, RouteMetadata, } from "./abstractions";
+export { Response } from "./abstractions";
 //# sourceMappingURL=index.d.ts.map

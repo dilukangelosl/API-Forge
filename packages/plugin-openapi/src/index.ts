@@ -1,5 +1,5 @@
-import type { APIForgePlugin, PluginPlatformAPI, APIForgeResponse } from "@api-forge/core";
-import { Response } from "@api-forge/core";
+import type { APIForgePlugin, PluginPlatformAPI, APIForgeResponse } from "@dilukangelo/api-forge-core";
+import { Response } from "@dilukangelo/api-forge-core";
 import { generateOpenAPISpec } from "./generator";
 import { getScalarUI } from "./viewer";
 

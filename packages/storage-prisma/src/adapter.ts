@@ -3,7 +3,7 @@ import type {
     OAuthClient,
     TokenRecord,
     AuthCodeRecord,
-} from "@api-forge/core";
+} from "@dilukangelo/api-forge-core";
 
 /**
  * Configuration for Prisma storage adapter

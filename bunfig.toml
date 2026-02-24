@@ -8,4 +8,3 @@ sourcemap = "linked"
 minify = false
 
 [test]
-preload = ["./test/setup.ts"]

@@ -1,13 +1,13 @@
-# @api-forge/storage-drizzle
+# @dilukangelo/api-forge-storage-drizzle
 
 Drizzle ORM storage adapter for API Forge OAuth.
 
 ## Installation
 
 ```bash
-npm install @api-forge/storage-drizzle drizzle-orm
+npm install @dilukangelo/api-forge-storage-drizzle drizzle-orm
 # or
-bun add @api-forge/storage-drizzle drizzle-orm
+bun add @dilukangelo/api-forge-storage-drizzle drizzle-orm
 ```
 
 ## Setup
@@ -24,10 +24,10 @@ import {
     oauthAuthCodes,
     oauthRateLimits,
     oauthConsents,
-} from "@api-forge/storage-drizzle/schema";
+} from "@dilukangelo/api-forge-storage-drizzle/schema";
 
 // Export alongside your other tables
-export * from "@api-forge/storage-drizzle/schema";
+export * from "@dilukangelo/api-forge-storage-drizzle/schema";
 export * from "./your-other-tables";
 ```
 
@@ -41,8 +41,8 @@ npx drizzle-kit push:pg
 ### 3. Use with API Forge
 
 ```typescript
-import { APIForge } from "@api-forge/core";
-import { DrizzleStorageAdapter } from "@api-forge/storage-drizzle";
+import { APIForge } from "@dilukangelo/api-forge-core";
+import { DrizzleStorageAdapter } from "@dilukangelo/api-forge-storage-drizzle";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 

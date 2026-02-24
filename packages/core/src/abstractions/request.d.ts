@@ -23,6 +23,8 @@ export interface APIForgeRequest {
     ip: string;
     /** OAuth context (set by OAuth middleware if authenticated) */
     oauth?: OAuthRequestContext;
+    /** Original framework request (for session access, etc.) */
+    _originalRequest?: unknown;
 }
 /**
  * OAuth context attached to authenticated requests

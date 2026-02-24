@@ -1,4 +1,4 @@
-import type { RouteDefinition } from "@api-forge/core";
+import type { RouteDefinition } from "@dilukangelo/api-forge-core";
 
 export interface OpenAPIOptions {
     title: string;

@@ -20,11 +20,11 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "paths": {
-      "@api-forge/core": ["./packages/core/src/index.ts"],
-      "@api-forge/core/*": ["./packages/core/src/*"],
-      "@api-forge/adapter-express": ["./packages/adapter-express/src/index.ts"],
-      "@api-forge/adapter-hono": ["./packages/adapter-hono/src/index.ts"],
-      "@api-forge/adapter-fastify": ["./packages/adapter-fastify/src/index.ts"]
+      "@dilukangelo/api-forge-core": ["./packages/core/src/index.ts"],
+      "@dilukangelo/api-forge-core/*": ["./packages/core/src/*"],
+      "@dilukangelo/api-forge-adapter-express": ["./packages/adapter-express/src/index.ts"],
+      "@dilukangelo/api-forge-adapter-hono": ["./packages/adapter-hono/src/index.ts"],
+      "@dilukangelo/api-forge-adapter-fastify": ["./packages/adapter-fastify/src/index.ts"]
     },
     "baseUrl": "."
   },

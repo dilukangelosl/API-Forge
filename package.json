@@ -1,5 +1,5 @@
 {
-    "name": "api-forge",
+    "name": "@dilukangelo/api-forge-monorepo",
     "version": "0.1.0",
     "description": "OAuth + API Gateway + Developer Portal for Any JS/TS Framework",
     "author": "Diluk Angelo <dilukangelo@gmail.com>",
@@ -11,7 +11,7 @@
         "examples/*"
     ],
     "scripts": {
-        "build": "bun run --filter '*' build",
+        "build": "cd packages/core && bun run build && cd ../.. && bun run --filter '!@api-forge/core' build",
         "dev": "bun run --filter '*' dev",
         "test": "bun test",
         "test:adapters": "bun test --filter '*adapter*'",
@@ -21,7 +21,9 @@
         "lint:fix": "eslint . --ext .ts,.tsx --fix",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
-        "clean": "rm -rf packages/*/dist"
+        "clean": "rm -rf packages/*/dist",
+        "build:publish": "bun run clean && bun run build",
+        "publish:all": "bun run build:publish && cd packages/core && npm publish --access public && cd ../adapter-express && npm publish --access public && cd ../plugin-openapi && npm publish --access public && cd ../storage-drizzle && npm publish --access public && cd ../storage-prisma && npm publish --access public"
     },
     "devDependencies": {
         "@types/bun": "latest",

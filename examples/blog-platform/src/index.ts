@@ -20,9 +20,9 @@ import {
     Response,
     hashSecret,
     type AuthenticatedUser,
-} from "@api-forge/core";
-import { expressAdapter } from "@api-forge/adapter-express";
-import { openapiPlugin } from "@api-forge/plugin-openapi";
+} from "@dilukangelo/api-forge-core";
+import { expressAdapter } from "@dilukangelo/api-forge-adapter-express";
+import { openapiPlugin } from "@dilukangelo/api-forge-plugin-openapi";
 
 // ============================================================================
 // TYPES

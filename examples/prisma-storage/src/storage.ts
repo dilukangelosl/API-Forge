@@ -9,7 +9,7 @@ import type {
     OAuthClient,
     TokenRecord,
     AuthCodeRecord,
-} from "@api-forge/core";
+} from "@dilukangelo/api-forge-core";
 import { PrismaClient } from "@prisma/client";
 
 export class SQLitePrismaAdapter implements StorageAdapter {

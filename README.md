@@ -23,8 +23,8 @@
 API Forge transforms any TypeScript/JavaScript HTTP application into a full-featured developer platform. Add OAuth 2.0 authentication, rate limiting, auto-generated documentation, and a self-service developer portal with minimal configuration.
 
 ```typescript
-import { APIForge, oauthPlugin, rateLimitPlugin } from "@api-forge/core";
-import { expressAdapter } from "@api-forge/adapter-express";
+import { APIForge, oauthPlugin, rateLimitPlugin } from "@dilukangelo/api-forge-core";
+import { expressAdapter } from "@dilukangelo/api-forge-adapter-express";
 
 const forge = new APIForge({
     auth: {
@@ -65,9 +65,9 @@ Works with any JavaScript/TypeScript HTTP framework:
 
 | Framework | Package |
 |-----------|---------|
-| Express | `@api-forge/adapter-express` |
-| Hono | `@api-forge/adapter-hono` *(coming soon)* |
-| Fastify | `@api-forge/adapter-fastify` *(coming soon)* |
+| Express | `@dilukangelo/api-forge-adapter-express` |
+| Hono | `@dilukangelo/api-forge-adapter-hono` *(coming soon)* |
+| Fastify | `@dilukangelo/api-forge-adapter-fastify` *(coming soon)* |
 
 ---
 
@@ -77,23 +77,23 @@ Works with any JavaScript/TypeScript HTTP framework:
 
 ```bash
 # Core package
-npm install @api-forge/core
+npm install @dilukangelo/api-forge-core
 
 # Framework adapter (Express)
-npm install @api-forge/adapter-express
+npm install @dilukangelo/api-forge-adapter-express
 
 # Optional: Storage adapters
-npm install @api-forge/storage-prisma
+npm install @dilukangelo/api-forge-storage-prisma
 # or
-npm install @api-forge/storage-drizzle
+npm install @dilukangelo/api-forge-storage-drizzle
 ```
 
 ### Basic Setup
 
 ```typescript
 import express from "express";
-import { APIForge, oauthPlugin, rateLimitPlugin, Response } from "@api-forge/core";
-import { expressAdapter } from "@api-forge/adapter-express";
+import { APIForge, oauthPlugin, rateLimitPlugin, Response } from "@dilukangelo/api-forge-core";
+import { expressAdapter } from "@dilukangelo/api-forge-adapter-express";
 
 // Create Express app
 const app = express();
@@ -201,7 +201,7 @@ forge
 ### Response Helpers
 
 ```typescript
-import { Response } from "@api-forge/core";
+import { Response } from "@dilukangelo/api-forge-core";
 
 // Success responses
 Response.ok({ data: "success" });           // 200
@@ -318,11 +318,11 @@ const forge = new APIForge({
 Production-ready with any Prisma-supported database:
 
 ```bash
-npm install @api-forge/storage-prisma
+npm install @dilukangelo/api-forge-storage-prisma
 ```
 
 ```typescript
-import { PrismaStorageAdapter } from "@api-forge/storage-prisma";
+import { PrismaStorageAdapter } from "@dilukangelo/api-forge-storage-prisma";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -340,11 +340,11 @@ See [Prisma Storage Guide](./packages/storage-prisma/README.md) for schema setup
 Lightweight ORM alternative:
 
 ```bash
-npm install @api-forge/storage-drizzle
+npm install @dilukangelo/api-forge-storage-drizzle
 ```
 
 ```typescript
-import { DrizzleStorageAdapter } from "@api-forge/storage-drizzle";
+import { DrizzleStorageAdapter } from "@dilukangelo/api-forge-storage-drizzle";
 import { drizzle } from "drizzle-orm/node-postgres";
 
 const db = drizzle(pool);
@@ -362,7 +362,7 @@ See [Drizzle Storage Guide](./packages/storage-drizzle/README.md) for schema set
 Implement the `StorageAdapter` interface:
 
 ```typescript
-import type { StorageAdapter } from "@api-forge/core";
+import type { StorageAdapter } from "@dilukangelo/api-forge-core";
 
 class MyStorageAdapter implements StorageAdapter {
     async createClient(client) { /* ... */ }
@@ -381,7 +381,7 @@ class MyStorageAdapter implements StorageAdapter {
 Auto-generate OpenAPI 3.1 specs and interactive docs:
 
 ```typescript
-import { openapiPlugin } from "@api-forge/plugin-openapi";
+import { openapiPlugin } from "@dilukangelo/api-forge-plugin-openapi";
 
 forge.use(openapiPlugin({
     title: "My API",
@@ -399,7 +399,7 @@ forge.use(openapiPlugin({
 Protect your API from abuse:
 
 ```typescript
-import { rateLimitPlugin } from "@api-forge/core";
+import { rateLimitPlugin } from "@dilukangelo/api-forge-core";
 
 forge.use(rateLimitPlugin({
     globalLimit: "1000/hour",
@@ -456,7 +456,7 @@ bun run dev
 ## Project Structure
 
 ```
-@api-forge/
+@dilukangelo/api-forge-
 ├── core/              # Core functionality (OAuth, rate limiting)
 ├── adapter-express/   # Express.js adapter
 ├── plugin-openapi/    # OpenAPI documentation plugin

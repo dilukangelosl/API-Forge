@@ -27,6 +27,16 @@ export interface RouteMetadata {
     tags?: string[];
     /** Whether this route requires authentication */
     requiresAuth?: boolean;
+    /**
+     * Field name in the resource that contains the owner's user ID
+     * When set, auto-checks: ctx.request.oauth.sub === resource[ownerField]
+     */
+    ownerField?: string;
+    /**
+     * Custom ownership check function
+     * Return true if the user is authorized to access this resource
+     */
+    ownershipCheck?: (ctx: APIForgeContext, resource: unknown) => boolean | Promise<boolean>;
 }
 /**
  * Plugin interface for extending API Forge

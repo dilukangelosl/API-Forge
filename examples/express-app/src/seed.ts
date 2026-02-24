@@ -6,7 +6,7 @@ import {
     generateClientSecret,
     hashSecret,
     MemoryStorageAdapter,
-} from "@api-forge/core";
+} from "@dilukangelo/api-forge-core";
 
 // Create storage and seed with test client
 const storage = new MemoryStorageAdapter();

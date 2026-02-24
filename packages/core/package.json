@@ -1,5 +1,5 @@
 {
-    "name": "@api-forge/core",
+    "name": "@dilukangelo/api-forge-core",
     "version": "0.1.0",
     "description": "Core API Forge library - OAuth, rate limiting, docs, and portal",
     "author": "Diluk Angelo <dilukangelo@gmail.com>",
@@ -15,10 +15,6 @@
         "./storage/memory": {
             "import": "./dist/storage/memory.js",
             "types": "./dist/storage/memory.d.ts"
-        },
-        "./storage/redis": {
-            "import": "./dist/storage/redis.js",
-            "types": "./dist/storage/redis.d.ts"
         }
     },
     "files": [
@@ -26,7 +22,7 @@
         "README.md"
     ],
     "scripts": {
-        "build": "bun build ./src/index.ts --outdir ./dist --target bun && tsc --emitDeclarationOnly --declaration --declarationDir ./dist",
+        "build": "bun build ./src/index.ts ./src/storage/memory.ts --outdir ./dist --target node && tsc --emitDeclarationOnly --declaration --declarationDir ./dist",
         "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir ./dist",
         "dev": "bun --watch ./src/index.ts",
         "test": "bun test"
@@ -50,5 +46,19 @@
         "bun-types": "^1.3.8",
         "express": "^4.18.0",
         "typescript": "^5.4.0"
-    }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dilukangelosl/API-Forge",
+        "directory": "packages/core"
+    },
+    "keywords": [
+        "oauth",
+        "oauth2",
+        "api-gateway",
+        "middleware",
+        "typescript",
+        "jwt",
+        "rate-limiting"
+    ]
 }

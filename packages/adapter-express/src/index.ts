@@ -6,7 +6,7 @@ import type {
     APIForgeHandler,
     APIForgeMiddleware,
     HttpMethod,
-} from "@api-forge/core";
+} from "@dilukangelo/api-forge-core";
 
 const ADAPTER_VERSION = "0.1.0";
 
@@ -50,7 +50,7 @@ export function expressAdapter(app: Application): FrameworkAdapter {
         sendResponse(res: Response, response: APIForgeResponse): void {
             // Set headers
             for (const [key, value] of Object.entries(response.headers)) {
-                res.setHeader(key, value);
+                res.setHeader(key, value as string | string[]);
             }
 
             // Set status and send body

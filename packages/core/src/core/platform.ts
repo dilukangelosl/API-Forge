@@ -312,7 +312,7 @@ export class APIForge implements PluginPlatformAPI {
 
         if (storage === "redis") {
             // Will be implemented separately
-            throw new Error("Redis storage requires @api-forge/storage-redis package");
+            throw new Error("Redis storage requires @dilukangelo/api-forge-storage-redis package");
         }
 
         if (typeof storage === "object" && "adapter" in storage) {

@@ -3,7 +3,7 @@ import type {
     OAuthClient,
     TokenRecord,
     AuthCodeRecord,
-} from "@api-forge/core";
+} from "@dilukangelo/api-forge-core";
 import { eq, and, lt } from "drizzle-orm";
 import { oauthClients, oauthTokens, oauthAuthCodes, oauthRateLimits, oauthConsents } from "./schema";
 

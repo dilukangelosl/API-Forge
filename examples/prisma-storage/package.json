@@ -11,9 +11,9 @@
         "db:studio": "prisma studio"
     },
     "dependencies": {
-        "@api-forge/adapter-express": "workspace:*",
-        "@api-forge/core": "workspace:*",
-        "@api-forge/storage-prisma": "workspace:*",
+        "@dilukangelo/api-forge-adapter-express": "workspace:*",
+        "@dilukangelo/api-forge-core": "workspace:*",
+        "@dilukangelo/api-forge-storage-prisma": "workspace:*",
         "@prisma/client": "^5.22.0",
         "express": "^4.21.0"
     },

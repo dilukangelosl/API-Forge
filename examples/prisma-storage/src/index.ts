@@ -4,8 +4,8 @@
  * Demonstrates using Prisma ORM with API Forge for persistent OAuth storage
  */
 import express from "express";
-import { APIForge, oauthPlugin, rateLimitPlugin, Response, generateClientSecret, hashSecret } from "@api-forge/core";
-import { expressAdapter } from "@api-forge/adapter-express";
+import { APIForge, oauthPlugin, rateLimitPlugin, Response, generateClientSecret, hashSecret } from "@dilukangelo/api-forge-core";
+import { expressAdapter } from "@dilukangelo/api-forge-adapter-express";
 import { PrismaClient } from "@prisma/client";
 import { SQLitePrismaAdapter } from "./storage";
 

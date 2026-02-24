@@ -5,8 +5,8 @@ import express from "express";
 import { Database } from "bun:sqlite";
 import { drizzle } from "drizzle-orm/bun-sqlite";
 import { eq } from "drizzle-orm";
-import { APIForge, oauthPlugin, rateLimitPlugin, Response, generateClientSecret, hashSecret } from "@api-forge/core";
-import { expressAdapter } from "@api-forge/adapter-express";
+import { APIForge, oauthPlugin, rateLimitPlugin, Response, generateClientSecret, hashSecret } from "@dilukangelo/api-forge-core";
+import { expressAdapter } from "@dilukangelo/api-forge-adapter-express";
 import * as schema from "./schema";
 import { SQLiteDrizzleAdapter } from "./storage";
 

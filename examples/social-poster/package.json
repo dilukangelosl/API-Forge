@@ -1,5 +1,5 @@
 {
-    "name": "@api-forge/example-social-poster",
+    "name": "@dilukangelo/api-forge-example-social-poster",
     "version": "0.1.0",
     "private": true,
     "description": "OAuth client example - posts on behalf of users via Blog Platform API",

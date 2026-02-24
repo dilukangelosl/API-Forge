@@ -1,4 +1,4 @@
-// Main entry point for @api-forge/core
+// Main entry point for @dilukangelo/api-forge-core
 
 // Abstractions
 export * from "./abstractions";

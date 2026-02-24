@@ -8,7 +8,7 @@ import type {
     OAuthClient,
     TokenRecord,
     AuthCodeRecord,
-} from "@api-forge/core";
+} from "@dilukangelo/api-forge-core";
 import { eq, and, lt } from "drizzle-orm";
 import { BetterSQLite3Database } from "drizzle-orm/better-sqlite3";
 import * as schema from "./schema";

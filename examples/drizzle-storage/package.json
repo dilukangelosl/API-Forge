@@ -9,9 +9,9 @@
         "db:push": "bun src/migrate.ts"
     },
     "dependencies": {
-        "@api-forge/adapter-express": "workspace:*",
-        "@api-forge/core": "workspace:*",
-        "@api-forge/storage-drizzle": "workspace:*",
+        "@dilukangelo/api-forge-adapter-express": "workspace:*",
+        "@dilukangelo/api-forge-core": "workspace:*",
+        "@dilukangelo/api-forge-storage-drizzle": "workspace:*",
         "drizzle-orm": "^0.29.4",
         "express": "^4.21.0"
     },

@@ -1,13 +1,13 @@
-# @api-forge/storage-prisma
+# @dilukangelo/api-forge-storage-prisma
 
 Prisma storage adapter for API Forge OAuth.
 
 ## Installation
 
 ```bash
-npm install @api-forge/storage-prisma @prisma/client
+npm install @dilukangelo/api-forge-storage-prisma @prisma/client
 # or
-bun add @api-forge/storage-prisma @prisma/client
+bun add @dilukangelo/api-forge-storage-prisma @prisma/client
 ```
 
 ## Setup
@@ -55,8 +55,8 @@ npx prisma migrate dev --name add-oauth-tables
 ### 3. Use with API Forge
 
 ```typescript
-import { APIForge } from "@api-forge/core";
-import { PrismaStorageAdapter } from "@api-forge/storage-prisma";
+import { APIForge } from "@dilukangelo/api-forge-core";
+import { PrismaStorageAdapter } from "@dilukangelo/api-forge-storage-prisma";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
